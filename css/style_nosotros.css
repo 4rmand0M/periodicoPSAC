@@ -1,0 +1,143 @@
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+
+}
+
+aside {
+    width: 250px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+
+.nav-menu {
+    padding: 20px 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.nav-item:hover {
+    background: #f3f4f6;
+}
+
+.nav-item svg,
+.nav-item .nav-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item .nav-icon {
+    object-fit: contain;
+    display: inline-block;
+}
+
+.section-divider {
+    border-top: 2px solid black;
+    margin-top: 20px;
+    padding-top: 15px;
+}
+
+/* Ocultar secciones de editor por defecto (se muestran con JS si hay permisos) */
+#section-publicar,
+#section-admtools {
+    display: none;
+}
+
+.divider-line {
+    width: 4px;
+    background: white;
+    transition: background 0.5s;
+}
+
+.main-container {
+   flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f3f4f6;          
+}
+
+
+header {
+    background: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #e5e7eb;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    width: 60px;
+    height: 60px;
+    background: #E9D5FF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-text {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+
+section {
+    width: 90%;
+    overflow-y: auto; 
+    overflow-x: hidden;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 40px 50px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border: 1px solid #e5e5e5;
+}
+
+/* Titulares estilo revista */
+h1, h2 {
+    color: #222;
+    margin-bottom: 15px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+/* Texto fluido y elegante */
+p {
+    color: #444;
+    line-height: 1.75;
+    margin-bottom: 20px;
+}
+
+ul {
+    padding-left: 25px;
+}
+
+li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
