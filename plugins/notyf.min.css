@@ -1,0 +1,9 @@
+/* Minimal Notyf placeholder CSS to match expected classes used by the local Notyf shim.
+   This file is intentionally small — the real Notyf has its own styling.
+   The project also has a DOM-based toast fallback, so this provides safe defaults. */
+#notyf-container{position:fixed;top:1rem;right:1rem;z-index:99999}
+.notyf{min-width:180px;padding:10px 14px;border-radius:8px;color:#fff;margin-bottom:10px;box-shadow:0 6px 18px rgba(0,0,0,0.12);font-family:Arial, sans-serif}
+.notyf--success{background:#16a34a}
+.notyf--error{background:#dc2626}
+.notyf--warning{background:#f59e0b;color:#111}
+.notyf--info{background:#2563eb}

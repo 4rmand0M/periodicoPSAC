@@ -10,7 +10,7 @@ async function verificarSesion() {
         }
         
         if (data.user.rol !== 'admin') {
-            alert('Acceso denegado. Solo administradores pueden acceder a esta página.');
+            try { notify.error('Acceso denegado. Solo administradores pueden acceder a esta página.', 'Acceso denegado'); } catch (e) { alert('Acceso denegado. Solo administradores pueden acceder a esta página.'); }
             window.location.href = 'index.html';
             return false;
         }
@@ -84,14 +84,13 @@ async function cargarUsuarios() {
             window.todosLosUsuarios = data.usuarios;
             actualizarContadores(data.usuarios);
             mostrarUsuarios(data.usuarios);
-            console.log('✅ Usuarios cargados:', data.usuarios.length);
         } else {
             console.error('❌ Error en respuesta:', data.message);
-            alert('Error al cargar usuarios: ' + data.message);
+            try { notify.error('Error al cargar usuarios: ' + data.message, 'Error'); } catch (e) { alert('Error al cargar usuarios: ' + data.message); }
         }
     } catch (error) {
         console.error('❌ Error al cargar usuarios:', error);
-        alert('Error de conexión al cargar usuarios:\n' + error.message);
+        try { notify.error('Error de conexión al cargar usuarios:\n' + error.message, 'Error de conexión'); } catch (e) { alert('Error de conexión al cargar usuarios:\n' + error.message); }
     }
 }
 
@@ -173,7 +172,7 @@ function abrirModal(editar = false) {
     const passwordInput = document.getElementById('password');
     const passwordHint = document.querySelector('.form-hint');
     
-    if (editar) {
+            if (editar) {
         title.textContent = 'Editar Usuario';
         passwordInput.removeAttribute('required');
         passwordHint.style.display = 'block';
@@ -304,6 +303,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Conectar botón de cerrar sesión si existe
+    const btnCerrar = document.getElementById('btnCerrarSesion');
+    if (btnCerrar) {
+        btnCerrar.addEventListener('click', () => {
+            if (typeof AuthGuard !== 'undefined' && AuthGuard.logout) {
+                AuthGuard.logout();
+            } else {
+                window.location.href = '../Connection/logout.php';
+            }
+        });
+    }
+
     // Cerrar modal al hacer clic en X o fuera del modal
     const closeBtn = document.querySelector('.close');
     if (closeBtn) {
@@ -347,14 +358,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const username = formData.get('username');
             
             if (!editando && password && password.length < 6) {
-                alert('⚠️ La contraseña debe tener al menos 6 caracteres');
+                try { notify.warning('La contraseña debe tener al menos 6 caracteres', 'Validación'); } catch (e) { alert('⚠️ La contraseña debe tener al menos 6 caracteres'); }
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
                 return;
             }
             
             if (username && username.length < 3) {
-                alert('⚠️ El usuario debe tener al menos 3 caracteres');
+                try { notify.warning('El usuario debe tener al menos 3 caracteres', 'Validación'); } catch (e) { alert('⚠️ El usuario debe tener al menos 3 caracteres'); }
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
                 return;
@@ -377,21 +388,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 if (result.success) {
                     // Animación de éxito
-                    submitBtn.textContent = '✅ ¡Guardado!';
-                    submitBtn.style.background = '#22c55e';
+                        submitBtn.textContent = '✅ ¡Guardado!';
+                        submitBtn.style.background = '#22c55e';
+                        try { notify.success('Usuario guardado correctamente', 'Éxito'); } catch (e) { /* ignore */ }
                     
                     setTimeout(() => {
                         cerrarModal();
                         cargarUsuarios();
                     }, 800);
                 } else {
-                    alert('❌ ' + result.message);
+                    try { notify.error(result.message, 'Error'); } catch (e) { alert('❌ ' + result.message); }
                     submitBtn.disabled = false;
                     submitBtn.textContent = originalText;
                 }
             } catch (error) {
                 console.error('❌ Error:', error);
-                alert('❌ Error de conexión');
+                try { notify.error('Error de conexión', 'Error'); } catch (e) { alert('❌ Error de conexión'); }
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
             }
@@ -415,47 +427,46 @@ async function editarUsuario(id) {
             
             abrirModal(true);
         } else {
-            alert('Error al cargar usuario');
+            try { notify.error('Error al cargar usuario', 'Error'); } catch (e) { alert('Error al cargar usuario'); }
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Error de conexión');
+        try { notify.error('Error de conexión', 'Error'); } catch (e) { alert('Error de conexión'); }
     }
 }
 
 // Eliminar usuario
 async function eliminarUsuario(id, username) {
-    // Confirmación mejorada
-    const confirmacion = confirm(
-        `⚠️ ELIMINAR USUARIO\n\n` +
-        `¿Estás seguro de eliminar a "${username}"?\n\n` +
-        `Esta acción NO se puede deshacer.`
-    );
-    
-    if (!confirmacion) return;
-    
-    try {
-        const response = await fetch(`../Connection/usuarios_crud.php?action=eliminar&id=${id}`);
-        const result = await response.json();
-        
-        if (result.success) {
-            // Animación de eliminación
-            const card = document.querySelector(`[data-user-id="${id}"]`);
-            if (card) {
-                card.style.animation = 'fadeOutDown 0.3s ease-out';
-                setTimeout(() => {
-                    cargarUsuarios();
-                    alert('✅ Usuario eliminado exitosamente');
-                }, 300);
-            } else {
-                cargarUsuarios();
-                alert('✅ ' + result.message);
+    // Confirmación mejorada usando notify.confirm
+    notify.confirm({
+        title: '⚠️ ELIMINAR USUARIO',
+        message: `¿Estás seguro de eliminar a "${username}"?\nEsta acción NO se puede deshacer.`,
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+        onConfirm: async () => {
+            try {
+                const response = await fetch(`../Connection/usuarios_crud.php?action=eliminar&id=${id}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const card = document.querySelector(`[data-user-id="${id}"]`);
+                    if (card) {
+                        card.style.animation = 'fadeOutDown 0.3s ease-out';
+                        setTimeout(() => {
+                            cargarUsuarios();
+                            try { notify.success('Usuario eliminado exitosamente', 'Eliminado'); } catch (e) { alert('✅ Usuario eliminado exitosamente'); }
+                        }, 300);
+                    } else {
+                        cargarUsuarios();
+                        try { notify.success(result.message, 'Eliminado'); } catch (e) { alert('✅ ' + result.message); }
+                    }
+                } else {
+                    try { notify.error(result.message, 'Error'); } catch (e) { alert('❌ ' + result.message); }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                try { notify.error('Error de conexión', 'Error'); } catch (e) { alert('❌ Error de conexión'); }
             }
-        } else {
-            alert('❌ ' + result.message);
         }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Error de conexión');
-    }
+    });
 }
