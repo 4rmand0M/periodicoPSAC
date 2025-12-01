@@ -451,94 +451,77 @@ header {
     transform: translateY(2px);
 }
 
-/* Avatar en sidebar */
-.user-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    text-transform: uppercase;
-    flex-shrink: 0;
-}
+/* ==========================================
+   ESTILOS DE SIDEBAR Y USUARIO
+   ========================================== */
 
-.user-info h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #1f2937;
+#userInfo {
+    padding: 20px;
+    border-top: 2px solid #e5e7eb;
+    margin-top: auto;
+    background: #f9fafb;
 }
-
-.user-info p {
-    margin: 5px 0 0 0;
-    font-size: 14px;
-    color: #6b7280;
-}
-
-.user-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 8px;
-}
-
-.badge-admin {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.badge-editor {
-    background: #dbeafe;
-    color: #1e40af;
-}
-
-.user-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #e5e7eb;
-}
-
 
 #userAvatar {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 15px;
-    background: #f3f4f6;
-    border-radius: 10px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
 }
 
-#userAvatar .avatar-circle {
-    width: 45px;
-    height: 45px;
+#userAvatar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+#userAvatar .avatar-circle,
+.user-avatar {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     color: white;
     text-transform: uppercase;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 #userAvatar .avatar-info {
     flex: 1;
+    min-width: 0;
 }
 
 #userAvatar .avatar-info strong {
     display: block;
-    font-size: 14px;
+    font-size: 15px;
     color: #1f2937;
+    font-weight: 700;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #userAvatar .avatar-info small {
-    font-size: 12px;
+    font-size: 13px;
     color: #6b7280;
+    font-weight: 500;
+    display: block;
+}
+
+.ingresar-btn.logout {
+    background: #EF4444 !important;
+}
+
+.ingresar-btn.logout:hover {
+    background: #DC2626 !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
