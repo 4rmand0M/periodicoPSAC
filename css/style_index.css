@@ -1,3 +1,169 @@
+
+/* BOTÓN HAMBURGUESA */
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #1f2937;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Animación cuando está abierto */
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* OVERLAY (fondo oscuro) */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MODIFICAR EL ASIDE EXISTENTE - AGREGAR ESTAS PROPIEDADES */
+aside {
+    /* Mantener propiedades existentes y AGREGAR: */
+    position: fixed;
+    left: -280px; /* Escondido por defecto en móvil */
+    top: 0;
+    width: 280px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+aside.active {
+    left: 0; /* Visible cuando está activo */
+}
+
+/* AJUSTES AL MAIN CONTAINER */
+.main-container {
+    margin-left: 0; /* Sin margen por defecto */
+    transition: margin-left 0.3s ease;
+}
+
+/* AJUSTE AL HEADER para el botón */
+header {
+    padding-left: 80px !important; /* Espacio para el botón hamburguesa */
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+/* MÓVILES (menú oculto por defecto) */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex; /* Mostrar botón */
+    }
+    
+    aside {
+        left: -280px; /* Escondido */
+    }
+    
+    aside.active {
+        left: 0; /* Visible al activar */
+    }
+    
+    .main-container {
+        margin-left: 0;
+    }
+    
+    .divider-line {
+        display: none; /* Ocultar línea divisoria */
+    }
+}
+
+/* TABLETS Y DESKTOP (menú siempre visible - OPCIONAL) */
+@media (min-width: 769px) {
+    /* OPCIÓN A: Siempre visible en desktop */   
+    .menu-toggle {
+        display: flex;
+    }
+    
+    aside {
+        left: -280px;
+    }
+    
+    aside.active {
+        left: 0;
+    }
+    
+    .main-container {
+        margin-left: 0;
+    }
+    
+}
+
+/* ==========================================
+   MEJORAS VISUALES
+   ========================================== */
+
+/* Añadir padding superior al nav-menu para el botón */
+.nav-menu {
+    padding-top: 80px !important; /* Espacio para el botón hamburguesa */
+}
+
+/* Prevenir selección de texto al hacer clic rápido */
+.menu-toggle,
+.sidebar-overlay {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+/* Smooth scroll en el aside */
+aside {
+    scroll-behavior: smooth;
+}
 * {
     margin: 0;
     padding: 0;
