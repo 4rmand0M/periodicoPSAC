@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre nosotros</title>
     <link rel="stylesheet" href="../css/style_nosotros.css">
-        <script src="../js/scrypt_index.js"></script>
+      <link rel="stylesheet" href="../css/sidebar_common.css">
+     
     <script src="../js/auth_guard.js"></script>
 </head>
 
@@ -43,6 +44,15 @@
             </a>
 
         </nav>
+
+        <!-- CONTENEDOR DE USUARIO-->
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+
     </aside>
     <div class="divider-line" id="dividerLine"></div>
     <div class="main-container">
@@ -103,6 +113,8 @@
             </section>
         </section>
     </div>
+    <script src="../js/sidebar_common.js"></script>
+       <script src="../js/scrypt_index.js"></script>
 </body>
 
 </html>

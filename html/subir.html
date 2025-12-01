@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subir Publicación - PSAC</title>
+        <link rel="stylesheet" href="../css/style_subir.css">
     <link rel="stylesheet" href="../css/style_index.css">
-    <link rel="stylesheet" href="../css/style_subir.css">
-    <script src="../js/scrypt_index.js"></script>
-    <script src="../js/auth_guard.js"></script>
+        <link rel="stylesheet" href="../css/notification_system.css">
+      <link rel="stylesheet" href="../css/sidebar_common.css">
+          <script src="../js/notification_system.js"></script>
+
+
 
 </head>
 <script src="../js/scrypt_subir.js"></script>
@@ -58,6 +61,15 @@
                 </div>
             </div>
         </nav>
+
+        <!-- CONTENEDOR DE USUARIO-->
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+
     </aside>
 
     <div class="divider-line" id="dividerLine"></div>
@@ -142,9 +154,7 @@
         </div>
     </div>
 
-    <script>
-
-    </script>
+<script src="../js/sidebar_common.js"></script>
 </body>
 
 </html>

@@ -7,17 +7,18 @@
     <!-- Estilos -->
     <link rel="stylesheet" href="../css/style_index.css">
     <link rel="stylesheet" href="../css/notification_system.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
 
-       <!-- Sistema de notificaciones -->
+    <!-- Sistema de notificaciones -->
     <script src="../js/notification_system.js"></script>
     <!-- Librerías necesarias -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
- 
 </head>
 
 <body>
-
+    <!-- ========================================
+         ASIDE CORREGIDO - Estructura completa
+         ======================================== -->
     <aside>
         <nav class="nav-menu">
             <a href="index.html" class="nav-item">
@@ -48,6 +49,7 @@
                 <img class="nav-icon" src="../svg/search.png" alt="" aria-hidden="true">
                 <span>Sobre nosotros</span>
             </a>
+            
             <div class="section-divider" id="section-publicar">
                 <div class="section-header" onclick="toggleSection('publicar')">
                     <span>Publicar</span>
@@ -59,6 +61,7 @@
                     <button class="btn btn-red" onclick="window.location.href='editar.html'">Editar</button>
                 </div>
             </div>
+            
             <div class="section-divider" id="section-admtools">
                 <div class="section-header" onclick="toggleSection('admtools')">
                     <span>ADM. tools</span>
@@ -68,6 +71,7 @@
                     <button class="btn btn-green-light" onclick="window.location='usuarios.html'">Nuevo editor</button>
                 </div>
             </div>
+            
             <div class="section-divider">
                 <div class="section-header">Filtros por área</div>
                 <div class="section-content">
@@ -115,7 +119,6 @@
                         <input type="checkbox" onchange="updateFilters()">
                         <div class="checkbox-custom"><span class="check-mark">✓</span></div>
                         <span class="filter-label">Ciencias Sociales</span> 
-                        
                     </label>
                     <label class="filter-item" data-color="#22C55E">
                         <input type="checkbox" onchange="updateFilters()">
@@ -126,13 +129,19 @@
             </div>
         </nav>
 
+        <!-- CONTENEDOR DE USUARIO-->
         <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
-        <div id="userAvatar"></div>
+            <div id="userAvatar">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
 
-        <button class="ingresar-btn" onclick="window.location.href='login.html'" >Ingresar</button>
-        
+        <!-- BOTÓN INGRESAR/SALIR - DEBE ESTAR DENTRO DEL ASIDE -->
+        <button class="ingresar-btn" onclick="window.location.href='login.html'">Ingresar</button>
     </aside>
+    
     <div class="divider-line" id="dividerLine"></div>
+    
     <div class="main-container">
         <header>
             <div class="logo-section">
@@ -163,12 +172,11 @@
             </div>
             <div class="destacadas-content" id="carouselDestacadas"></div>
         </div>
+        
         <div class="body-content" id="publicaciones"></div>
     </div>
 
     <script src="../js/scrypt_index.js"></script>
-
-
+    <script src="../js/sidebar_common.js"></script>
 </body>
-</html>  
-
+</html>
