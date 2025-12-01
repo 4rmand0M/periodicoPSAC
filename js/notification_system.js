@@ -1,283 +1,335 @@
-// Simple notification shim to provide a `notify` API used across the project.
-// This is a minimal fallback that uses native alerts/confirms when no UI library
-// is available. It avoids runtime ReferenceError for `notify` and provides the
-// methods expected by the existing code: loading, remove, success, error, info,
-// warning, confirm.
-(function (global) {
-    const notifications = {};
-
-    function makeText(title, message) {
-        if (title && message) return title + "\n" + message;
-        return (message || title || '');
-    }
-
-    const useSwal = typeof global.Swal === 'function' || typeof global.Swal === 'object';
-    const useNotyf = typeof global.Notyf === 'function' || typeof global.Notyf === 'object';
-    let notyfInstance = null;
-
-    // Lazy initializer for Notyf: try to create an instance when first needed.
-    function getNotyfInstance() {
-        if (notyfInstance) return notyfInstance;
-        try {
-            console.log('[notify] getNotyfInstance: typeof Notyf =', typeof global.Notyf);
-            if (typeof global.Notyf === 'function' || typeof global.Notyf === 'object') {
-                // If the document isn't ready, defer construction until DOMContentLoaded
-                if (!document || document.readyState === 'loading' || !(document.body || document.getElementsByTagName('body')[0])) {
-                    console.log('[notify] document not ready — deferring Notyf init until DOMContentLoaded');
-                    try {
-                        document.addEventListener('DOMContentLoaded', function onReady() {
-                            document.removeEventListener('DOMContentLoaded', onReady);
-                            try {
-                                notyfInstance = new Notyf({ duration: 3500, position: { x: 'right', y: 'top' } });
-                                console.log('[notify] Notyf instance created on DOMContentLoaded');
-                            } catch (err) {
-                                console.error('[notify] Notyf constructor threw on DOMContentLoaded:', err && err.message ? err.message : err);
-                                notyfInstance = null;
-                            }
-                        });
-                    } catch (e) {
-                        console.error('[notify] failed to attach DOMContentLoaded listener for Notyf init:', e && e.message ? e.message : e);
-                    }
-                    return null;
-                }
-                try {
-                    notyfInstance = new Notyf({ duration: 3500, position: { x: 'right', y: 'top' } });
-                    console.log('[notify] Notyf instance created');
-                    return notyfInstance;
-                } catch (innerErr) {
-                    console.error('[notify] Notyf constructor threw:', innerErr && innerErr.message ? innerErr.message : innerErr);
-                    notyfInstance = null;
-                }
-            } else {
-                console.log('[notify] Notyf not present (typeof not function/object)');
-            }
-        } catch (e) {
-            console.error('[notify] getNotyfInstance error:', e && e.message ? e.message : e);
-            notyfInstance = null;
+// Sistema de notificaciones completamente funcional y autónomo
+(function(global) {
+    'use strict';
+    
+    // Contenedor único de notificaciones
+    let container = null;
+    let notificationCount = 0;
+    
+    // Inicializar contenedor
+    function initContainer() {
+        if (container && document.body.contains(container)) {
+            return container;
         }
-        return null;
-    }
-
-    // Minimal DOM-based toast implementation used when Notyf isn't available.
-    let domToastContainer = null;
-    function ensureDomToastContainer() {
-        if (domToastContainer) return domToastContainer;
-        // Prefer existing #notyf-container (from actual Notyf CSS/shim) so styles match
-        const existing = document.getElementById('notyf-container');
-        if (existing) {
-            domToastContainer = existing;
-            return domToastContainer;
+        
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.className = 'notification-container';
+        container.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 420px;
+            pointer-events: none;
+        `;
+        
+        // Asegurar que el body esté disponible
+        if (document.body) {
+            document.body.appendChild(container);
+        } else {
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.appendChild(container);
+            });
         }
-        domToastContainer = document.createElement('div');
-        domToastContainer.id = 'notyf-container';
-
-        // Only inject minimal animation CSS if not already present
-        if (!document.querySelector('style[data-notify-dom-style]')) {
-            const css = `
-                #notyf-container{position:fixed;top:1rem;right:1rem;z-index:99999;display:flex;flex-direction:column;gap:0.6rem}
-                .notyf{min-width:180px;padding:10px 14px;border-radius:8px;color:#fff;margin-bottom:10px;box-shadow:0 6px 18px rgba(0,0,0,0.12);font-family:Arial, sans-serif;opacity:0;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease}
-                .notyf--success{background:#16a34a}
-                .notyf--error{background:#dc2626}
-                .notyf--warning{background:#f59e0b;color:#111}
-                .notyf--info{background:#2563eb}
-            `;
-            const style = document.createElement('style');
-            style.setAttribute('data-notify-dom-style', '');
-            style.appendChild(document.createTextNode(css));
-            const head = document.head || document.getElementsByTagName('head')[0] || document.documentElement;
-            try { head.appendChild(style); } catch (e) { /* ignore */ }
-        }
-
-        const body = document.body || document.getElementsByTagName('body')[0] || document.documentElement;
-        try { body.appendChild(domToastContainer); } catch (e) { /* ignore */ }
-        return domToastContainer;
+        
+        return container;
     }
-
-    function showDomToast(type, text) {
-        const container = ensureDomToastContainer();
-        const el = document.createElement('div');
-        // Use same classes as Notyf so the included `plugins/notyf.min.css` applies
-        const cls = 'notyf ' + (type === 'success' ? 'notyf--success' : type === 'error' ? 'notyf--error' : type === 'warning' ? 'notyf--warning' : 'notyf--info');
-        el.className = cls;
-        el.textContent = text || '';
-        container.appendChild(el);
-        // trigger animation
-        requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; });
-        const timeout = setTimeout(() => {
-            el.style.opacity = '0'; el.style.transform = 'translateY(-6px)';
-            setTimeout(() => { try { container.removeChild(el); } catch (e) {} }, 200);
-        }, 3000);
-        // return an id-like token so remove() can clear it if needed
-        const id = 'dom_' + Date.now() + Math.floor(Math.random()*1000);
-        notifications[id] = { el, timeout };
+    
+    // Iconos SVG
+    const icons = {
+        success: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16.5 5L7.5 14L3.5 10"/>
+        </svg>`,
+        error: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="8"/>
+            <line x1="10" y1="6" x2="10" y2="10"/>
+            <line x1="10" y1="14" x2="10.01" y2="14"/>
+        </svg>`,
+        warning: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 2L2 17h16L10 2z"/>
+            <line x1="10" y1="8" x2="10" y2="12"/>
+            <line x1="10" y1="15" x2="10.01" y2="15"/>
+        </svg>`,
+        info: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="8"/>
+            <line x1="10" y1="14" x2="10" y2="10"/>
+            <line x1="10" y1="6" x2="10.01" y2="6"/>
+        </svg>`,
+        loading: `<div style="width: 20px; height: 20px; border: 3px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>`
+    };
+    
+    // Crear notificación
+    function createNotification(type, message, title, duration) {
+        const cont = initContainer();
+        const id = 'notif_' + (++notificationCount) + '_' + Date.now();
+        
+        const notif = document.createElement('div');
+        notif.id = id;
+        notif.className = 'notification notification-' + type;
+        notif.style.cssText = `
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            min-width: 320px;
+            max-width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid;
+            pointer-events: auto;
+            animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateX(400px);
+        `;
+        
+        // Colores por tipo
+        const colors = {
+            success: '#22c55e',
+            error: '#ef4444',
+            warning: '#f59e0b',
+            info: '#3b82f6',
+            loading: '#8b5cf6'
+        };
+        
+        notif.style.borderLeftColor = colors[type] || colors.info;
+        
+        // Estructura HTML
+        notif.innerHTML = `
+            <div class="notification-icon" style="
+                width: 28px;
+                height: 28px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: ${type === 'success' ? '#dcfce7' : type === 'error' ? '#fee2e2' : type === 'warning' ? '#fef3c7' : type === 'info' ? '#dbeafe' : '#ede9fe'};
+                color: ${colors[type]};
+            ">
+                ${icons[type] || icons.info}
+            </div>
+            <div class="notification-content" style="flex: 1;">
+                ${title ? `<div class="notification-title" style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: #1f2937;">${title}</div>` : ''}
+                <div class="notification-message" style="font-size: 13px; color: #6b7280; line-height: 1.4;">${message}</div>
+            </div>
+            ${type !== 'loading' ? `
+            <button class="notification-close" style="
+                background: none;
+                border: none;
+                color: #9ca3af;
+                cursor: pointer;
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 4px;
+                transition: all 0.2s;
+                width: 24px;
+                height: 24px;
+            " onclick="notify.remove('${id}')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="4" x2="4" y2="12"/>
+                    <line x1="4" y1="4" x2="12" y2="12"/>
+                </svg>
+            </button>` : ''}
+            ${duration > 0 ? '<div class="notification-progress" style="position: absolute; bottom: 0; left: 0; height: 3px; background: currentColor; opacity: 0.3; width: 100%;"></div>' : ''}
+        `;
+        
+        cont.appendChild(notif);
+        
+        // Animación de entrada
+        requestAnimationFrame(() => {
+            notif.style.opacity = '1';
+            notif.style.transform = 'translateX(0)';
+        });
+        
+        // Auto-cerrar
+        if (duration > 0) {
+            setTimeout(() => {
+                removeNotification(id);
+            }, duration);
+        }
+        
         return id;
     }
-
-    const notify = {
-        loading(message) {
-            if (useSwal) {
-                const id = 'swal_loading_' + Date.now();
-                Swal.fire({
-                    title: message || 'Cargando...',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                notifications[id] = true;
-                return id;
+    
+    // Remover notificación
+    function removeNotification(id) {
+        const notif = document.getElementById(id);
+        if (!notif) return;
+        
+        notif.style.animation = 'slideOutRight 0.3s ease-out forwards';
+        notif.style.opacity = '0';
+        notif.style.transform = 'translateX(400px)';
+        
+        setTimeout(() => {
+            if (notif.parentNode) {
+                notif.parentNode.removeChild(notif);
             }
-            const id = 'not_' + Date.now();
-            notifications[id] = { type: 'loading', message };
-            console.log('[notify] loading:', message);
-            return id;
+        }, 300);
+    }
+    
+    // Modal de confirmación
+    function showConfirm(options) {
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s;
+        `;
+        
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: scaleIn 0.2s;
+        `;
+        
+        modal.innerHTML = `
+            <div style="font-size: 18px; font-weight: 600; color: #1f2937; margin-bottom: 12px;">
+                ${options.title || '¿Confirmar?'}
+            </div>
+            <div style="font-size: 14px; color: #6b7280; margin-bottom: 20px; line-height: 1.5;">
+                ${options.message || ''}
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button id="confirmCancel" style="
+                    padding: 10px 20px;
+                    background: #f3f4f6;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                ">${options.cancelText || 'Cancelar'}</button>
+                <button id="confirmOk" style="
+                    padding: 10px 20px;
+                    background: #ef4444;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                ">${options.confirmText || 'Confirmar'}</button>
+            </div>
+        `;
+        
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+        
+        // Estilos de animación
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes scaleIn {
+                from { transform: scale(0.9); opacity: 0; }
+                to { transform: scale(1); opacity: 1; }
+            }
+            @keyframes slideInRight {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            .notification-close:hover {
+                background: rgba(0, 0, 0, 0.05) !important;
+                color: #4b5563 !important;
+            }
+            #confirmCancel:hover {
+                background: #e5e7eb !important;
+            }
+            #confirmOk:hover {
+                background: #dc2626 !important;
+            }
+        `;
+        
+        if (!document.getElementById('notify-animations')) {
+            style.id = 'notify-animations';
+            document.head.appendChild(style);
+        }
+        
+        const btnOk = modal.querySelector('#confirmOk');
+        const btnCancel = modal.querySelector('#confirmCancel');
+        
+        btnOk.onclick = () => {
+            if (options.onConfirm) options.onConfirm();
+            document.body.removeChild(overlay);
+        };
+        
+        btnCancel.onclick = () => {
+            if (options.onCancel) options.onCancel();
+            document.body.removeChild(overlay);
+        };
+        
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                if (options.onCancel) options.onCancel();
+                document.body.removeChild(overlay);
+            }
+        };
+    }
+    
+    // API pública
+    global.notify = {
+        success: function(message, title, duration) {
+            return createNotification('success', message, title || 'Éxito', duration || 3000);
         },
-        remove(id) {
-            if (!id) return;
-            if (useSwal) {
-                // SweetAlert uses a global modal; closing it removes loading/toasts
-                Swal.close();
-                delete notifications[id];
-                return;
-            }
-            if (notifications[id]) delete notifications[id];
+        
+        error: function(message, title, duration) {
+            return createNotification('error', message, title || 'Error', duration || 4000);
         },
-        success(message, title) {
-            const text = makeText(title, message);
-            const nf = getNotyfInstance();
-            if (nf) {
-                try { console.log('[notify] success -> backend: Notyf'); nf.success(text); return; } catch (e) { console.warn('[notify] Notyf failed on success:', e); }
-            }
-            try { console.log('[notify] success -> backend: DOM fallback'); showDomToast('success', text); return; } catch (e) { console.warn('[notify] DOM fallback failed on success:', e); }
-            if (useSwal) {
-                console.log('[notify] success -> backend: SweetAlert2');
-                return Swal.fire({ icon: 'success', title: title || '', text: message || '' });
-            }
-            try { console.log('[notify] success -> backend: native alert'); window.alert(text); } catch (e) { console.log('[notify] success fallback log:', title, message); }
+        
+        warning: function(message, title, duration) {
+            return createNotification('warning', message, title || 'Advertencia', duration || 3500);
         },
-        error(message, title) {
-            const text = makeText(title, message);
-            const nf = getNotyfInstance();
-            if (nf) {
-                try { console.log('[notify] error -> backend: Notyf'); nf.error(text); return; } catch (e) { console.warn('[notify] Notyf failed on error:', e); }
-            }
-            try { console.log('[notify] error -> backend: DOM fallback'); showDomToast('error', text); return; } catch (e) { console.warn('[notify] DOM fallback failed on error:', e); }
-            if (useSwal) {
-                console.log('[notify] error -> backend: SweetAlert2');
-                return Swal.fire({ icon: 'error', title: title || 'Error', text: message || '' });
-            }
-            try { console.log('[notify] error -> backend: native alert'); window.alert(text); } catch (e) { console.log('[notify] error fallback log:', title, message); }
+        
+        info: function(message, title, duration) {
+            return createNotification('info', message, title || 'Información', duration || 3000);
         },
-        info(message, title) {
-            const text = makeText(title, message);
-            const nf = getNotyfInstance();
-            if (nf) {
-                try { console.log('[notify] info -> backend: Notyf'); nf.open({ type: 'info', message: text }); return; } catch (e) { console.warn('[notify] Notyf failed on info:', e); }
-            }
-            try { console.log('[notify] info -> backend: DOM fallback'); showDomToast('info', text); return; } catch (e) { console.warn('[notify] DOM fallback failed on info:', e); }
-            if (useSwal) {
-                console.log('[notify] info -> backend: SweetAlert2');
-                return Swal.fire({ icon: 'info', title: title || '', text: message || '' });
-            }
-            try { console.log('[notify] info -> backend: native alert'); window.alert(text); } catch (e) { console.log('[notify] info fallback log:', title, message); }
+        
+        loading: function(message, title) {
+            return createNotification('loading', message, title || 'Cargando', 0);
         },
-        warning(message, title) {
-            const text = makeText(title, message);
-            const nf = getNotyfInstance();
-            if (nf) {
-                try { console.log('[notify] warning -> backend: Notyf'); nf.open({ type: 'warning', message: text }); return; } catch (e) { console.warn('[notify] Notyf failed on warning:', e); }
+        
+        remove: function(id) {
+            if (id) {
+                removeNotification(id);
             }
-            try { console.log('[notify] warning -> backend: DOM fallback'); showDomToast('warning', text); return; } catch (e) { console.warn('[notify] DOM fallback failed on warning:', e); }
-            if (useSwal) {
-                console.log('[notify] warning -> backend: SweetAlert2');
-                return Swal.fire({ icon: 'warning', title: title || 'Aviso', text: message || '' });
-            }
-            try { console.log('[notify] warning -> backend: native alert'); window.alert(text); } catch (e) { console.log('[notify] warning fallback log:', title, message); }
         },
-        confirm(options) {
-            // options: { title, message, onConfirm, onCancel }
-            if (useSwal) {
-                Swal.fire({
-                    title: options && options.title ? options.title : 'Confirmar',
-                    text: options && options.message ? options.message : '',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar',
-                    cancelButtonText: 'Cancelar'
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        if (options && typeof options.onConfirm === 'function') options.onConfirm();
-                    } else {
-                        if (options && typeof options.onCancel === 'function') options.onCancel();
-                    }
-                });
-                return;
-            }
-            const text = makeText(options && options.title, options && options.message || '¿Confirmar?');
-            const ok = window.confirm(text);
-            if (ok) {
-                if (options && typeof options.onConfirm === 'function') options.onConfirm();
-            } else {
-                if (options && typeof options.onCancel === 'function') options.onCancel();
-            }
-            return ok;
+        
+        confirm: function(options) {
+            showConfirm(options || {});
         }
     };
-
-    global.notify = notify;
-    // Debug output to help verify which adaptadores están activos
-    try {
-        // Attempt to initialize Notyf now for a clearer status message
-        const _nf = getNotyfInstance();
-        console.log('[notify] initialized; Notyf:', !!_nf, 'SweetAlert2:', useSwal);
-    } catch (e) { /* ignore */ }
-
-    // Diagnostic helper: call `notify.test()` from the console to run a quick
-    // sequence of toasts/modals to verify that notifications work on this page.
-    notify.test = async function () {
-        try {
-            console.log('[notify.test] starting test sequence');
-            const _nf = getNotyfInstance();
-            if (_nf) {
-                _nf.success('Notyf OK: éxito');
-                await new Promise(r => setTimeout(r, 600));
-                _nf.error('Notyf OK: error');
-                await new Promise(r => setTimeout(r, 600));
-                _nf.open({ type: 'info', message: 'Notyf OK: info' });
-                await new Promise(r => setTimeout(r, 600));
-                _nf.open({ type: 'warning', message: 'Notyf OK: warning' });
-            } else if (useSwal) {
-                await Swal.fire({ title: 'Fallback: SweetAlert2 activo', text: 'Mostraré confirm y un toast simulado.' });
-            } else {
-                window.alert('Fallback: Ninguna librería de notificaciones activa.\nnotify.test muestra alertas nativas.');
-            }
-
-            // Test loading modal (Swal) if available
-            if (useSwal) {
-                const id = notify.loading('Probando carga...');
-                await new Promise(r => setTimeout(r, 800));
-                notify.remove(id);
-            }
-
-            // Test confirm behavior
-            if (useSwal) {
-                await new Promise(resolve => {
-                    notify.confirm({
-                        title: '¿Confirmación de prueba? (Swal)',
-                        message: 'Pulsa Aceptar o Cancelar para probar handlers.',
-                        onConfirm: () => { console.log('[notify.test] confirm -> onConfirm'); resolve(); },
-                        onCancel: () => { console.log('[notify.test] confirm -> onCancel'); resolve(); }
-                    });
-                });
-            } else {
-                const r = window.confirm('Confirmación de prueba: OK/Cancelar');
-                console.log('[notify.test] native confirm result:', r);
-            }
-
-            console.log('[notify.test] finished');
-        } catch (err) {
-            console.error('[notify.test] error during test:', err);
-        }
-    };
+    
+    console.log('✅ Sistema de notificaciones inicializado correctamente');
+    
 })(window);

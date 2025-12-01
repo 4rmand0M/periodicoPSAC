@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subir Publicación - PSAC</title>
     <link rel="stylesheet" href="../css/style_index.css">
     <link rel="stylesheet" href="../css/style_subir.css">
-    <link rel="stylesheet" href="../plugins/notyf.min.css">
-    <script src="../plugins/notyf.min.js"></script>
-    <script src="../plugins/sweetalert2.min.js"></script>
-    <script src="../js/notification_system.js"></script>
-    <script src="../js/scrypt_subir.js"></script>
+    <script src="../js/scrypt_index.js"></script>
+    <script src="../js/auth_guard.js"></script>
+
 </head>
+<script src="../js/scrypt_subir.js"></script>
+
 <body>
     <aside>
         <nav class="nav-menu">
@@ -43,7 +44,7 @@
                 <img class="nav-icon" src="../svg/search.png" alt="" aria-hidden="true">
                 <span>sobre nosotros</span>
             </a>
-            
+
             <div class="section-divider">
                 <div class="section-header" onclick="toggleSection('publicar')">
                     <span>Publicar</span>
@@ -51,15 +52,16 @@
                 </div>
                 <div class="section-content" id="publicar">
                     <button class="btn btn-yellow" onclick="window.location.href='subir.html'">subir</button>
-                    <button class="btn btn-orange" id="btnEliminar" onclick="window.location.href='index.html'">eliminar</button>
+                    <button class="btn btn-orange" id="btnEliminar"
+                        onclick="window.location.href='index.html'">eliminar</button>
                     <button class="btn btn-red" onclick="window.location.href='editar.html'">editar</button>
                 </div>
             </div>
         </nav>
     </aside>
-    
+
     <div class="divider-line" id="dividerLine"></div>
-    
+
     <div class="main-container">
         <header>
             <div class="logo-section">
@@ -82,7 +84,8 @@
         <div class="body-content">
             <div class="form-container">
                 <h1>📝 Subir Nueva Publicación</h1>
-                <form action="../Connection/subir_publicacion.php" method="post" enctype="multipart/form-data" id="formPublicar" enctype="multipart/form-data">
+                <form action="../Connection/subir_publicacion.php" method="post" enctype="multipart/form-data"
+                    id="formPublicar" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="tipoPublicar">Tipo de Publicación:</label>
                         <select name="tipo" id="tipoPublicar" required>
@@ -110,13 +113,15 @@
 
                     <div class="form-group">
                         <label for="contenidoPublicar">Contenido:</label>
-                        <textarea name="contenido" id="contenidoPublicar" placeholder="Escribe el contenido de tu publicación aquí..." required></textarea>
+                        <textarea name="contenido" id="contenidoPublicar"
+                            placeholder="Escribe el contenido de tu publicación aquí..." required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="archivoPublicar">Archivo (imagen/video si aplica):</label>
                         <input type="file" name="archivo" id="archivoPublicar" accept="image/*,video/*">
-                        <div class="file-info">Formatos permitidos: JPG, PNG, GIF, WEBP (imágenes) | MP4, WEBM, OGG (videos). Máximo 10MB</div>
+                        <div class="file-info">Formatos permitidos: JPG, PNG, GIF, WEBP (imágenes) | MP4, WEBM, OGG
+                            (videos). Máximo 10MB</div>
                         <div class="preview-container" id="previewContainer"></div>
                     </div>
 
@@ -129,7 +134,8 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn-submit">✓ Publicar</button>
-                        <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">✗ Cancelar</button>
+                        <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">✗
+                            Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -140,4 +146,5 @@
 
     </script>
 </body>
+
 </html>
