@@ -1,5 +1,29 @@
 
-/* BOTÓN HAMBURGUESA */
+/* ==========================================
+   1. RESET Y BASE
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ==========================================
+   2. BOTÓN HAMBURGUESA
+   ========================================== */
 .menu-toggle {
     position: fixed;
     top: 20px;
@@ -34,7 +58,6 @@
     transition: all 0.3s ease;
 }
 
-/* Animación cuando está abierto */
 .menu-toggle.active span:nth-child(1) {
     transform: rotate(45deg) translate(8px, 8px);
 }
@@ -48,7 +71,9 @@
     transform: rotate(-45deg) translate(8px, -8px);
 }
 
-/* OVERLAY (fondo oscuro) */
+/* ==========================================
+   3. OVERLAY (Fondo oscuro)
+   ========================================== */
 .sidebar-overlay {
     position: fixed;
     top: 0;
@@ -67,126 +92,53 @@
     visibility: visible;
 }
 
-/* MODIFICAR EL ASIDE EXISTENTE - AGREGAR ESTAS PROPIEDADES */
+/* ==========================================
+   4. SIDEBAR (ASIDE)
+   ========================================== */
 aside {
-    /* Mantener propiedades existentes y AGREGAR: */
     position: fixed;
-    left: -280px; /* Escondido por defecto en móvil */
+    left: -280px;
     top: 0;
     width: 280px;
     height: 100vh;
-    z-index: 1000;
-    transition: left 0.3s ease;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-}
-
-aside.active {
-    left: 0; /* Visible cuando está activo */
-}
-
-/* AJUSTES AL MAIN CONTAINER */
-.main-container {
-    margin-left: 0; /* Sin margen por defecto */
-    transition: margin-left 0.3s ease;
-}
-
-/* AJUSTE AL HEADER para el botón */
-header {
-    padding-left: 80px !important; /* Espacio para el botón hamburguesa */
-}
-
-/* ==========================================
-   RESPONSIVE
-   ========================================== */
-
-/* MÓVILES (menú oculto por defecto) */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: flex; /* Mostrar botón */
-    }
-    
-    aside {
-        left: -280px; /* Escondido */
-    }
-    
-    aside.active {
-        left: 0; /* Visible al activar */
-    }
-    
-    .main-container {
-        margin-left: 0;
-    }
-    
-    .divider-line {
-        display: none; /* Ocultar línea divisoria */
-    }
-}
-
-/* TABLETS Y DESKTOP (menú siempre visible - OPCIONAL) */
-@media (min-width: 769px) {
-    /* OPCIÓN A: Siempre visible en desktop */   
-    .menu-toggle {
-        display: flex;
-    }
-    
-    aside {
-        left: -280px;
-    }
-    
-    aside.active {
-        left: 0;
-    }
-    
-    .main-container {
-        margin-left: 0;
-    }
-    
-}
-
-/* ==========================================
-   MEJORAS VISUALES
-   ========================================== */
-
-/* Añadir padding superior al nav-menu para el botón */
-.nav-menu {
-    padding-top: 80px !important; /* Espacio para el botón hamburguesa */
-}
-
-/* Prevenir selección de texto al hacer clic rápido */
-.menu-toggle,
-.sidebar-overlay {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-}
-
-/* Smooth scroll en el aside */
-aside {
-    scroll-behavior: smooth;
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-}
-
-aside {
-    width: 250px;
     background: white;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    scroll-behavior: smooth;
 }
 
+aside.active {
+    left: 0;
+}
+
+/* Scrollbar personalizado para el sidebar */
+aside::-webkit-scrollbar {
+    width: 8px;
+}
+
+aside::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+aside::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+aside::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* ==========================================
+   5. NAVEGACIÓN DEL SIDEBAR
+   ========================================== */
 .nav-menu {
-    padding: 20px 0;
+    padding: 80px 0 20px 0; /* Espacio para el botón hamburguesa */
 }
 
 .nav-item {
@@ -215,13 +167,15 @@ aside {
     display: inline-block;
 }
 
+/* ==========================================
+   6. SECCIONES COLAPSABLES
+   ========================================== */
 .section-divider {
-    border-top: 2px solid black;
+    border-top: 2px solid #e5e7eb;
     margin-top: 20px;
     padding-top: 15px;
 }
 
-/* Ocultar secciones de editor por defecto (se muestran con JS si hay permisos) */
 #section-publicar,
 #section-admtools {
     display: none;
@@ -248,6 +202,18 @@ aside {
     display: none;
 }
 
+.arrow {
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+.arrow.rotated {
+    transform: rotate(-90deg);
+}
+
+/* ==========================================
+   7. BOTONES DEL SIDEBAR
+   ========================================== */
 .btn {
     padding: 10px 20px;
     border: none;
@@ -255,6 +221,7 @@ aside {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s;
+    font-size: 14px;
 }
 
 .btn-yellow {
@@ -287,9 +254,12 @@ aside {
 }
 
 .btn-green-light:hover {
-    background: #44ff88;
+    background: #22ff66;
 }
 
+/* ==========================================
+   8. FILTROS POR ÁREA
+   ========================================== */
 .filter-item {
     display: flex;
     align-items: center;
@@ -320,7 +290,7 @@ aside {
     display: none;
 }
 
-.filter-item input[type="checkbox"]:checked+.checkbox-custom {
+.filter-item input[type="checkbox"]:checked + .checkbox-custom {
     border-color: transparent;
 }
 
@@ -336,46 +306,152 @@ aside {
     display: none;
 }
 
-.filter-item input[type="checkbox"]:checked+.checkbox-custom .check-mark {
+.filter-item input[type="checkbox"]:checked + .checkbox-custom .check-mark {
     display: block;
 }
 
+/* ==========================================
+   9. INFORMACIÓN DEL USUARIO
+   ========================================== */
+#userInfo {
+    padding: 20px;
+    border-top: 2px solid #e5e7eb;
+    margin-top: auto;
+    background: #f9fafb;
+}
+
+#userAvatar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+#userAvatar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+#userAvatar .avatar-circle,
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#userAvatar .avatar-info {
+    flex: 1;
+    min-width: 0;
+}
+
+#userAvatar .avatar-info strong {
+    display: block;
+    font-size: 15px;
+    color: #1f2937;
+    font-weight: 700;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#userAvatar .avatar-info small {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+    display: block;
+}
+
+/* ==========================================
+   10. BOTÓN DE INGRESAR/SALIR
+   ========================================== */
 .ingresar-btn {
     margin: 20px;
     padding: 15px;
     background: #4ADE80;
     border: none;
     border-radius: 30px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s;
 }
 
 .ingresar-btn:hover {
     background: #22C55E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
 }
 
+.ingresar-btn.logout {
+    background: #EF4444 !important;
+}
+
+.ingresar-btn.logout:hover {
+    background: #DC2626 !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* ==========================================
+   11. LÍNEA DIVISORIA
+   ========================================== */
 .divider-line {
     width: 4px;
     background: white;
-    transition: background 0.5s;
+    transition: left 0.3s ease, background 0.5s ease;
+    position: fixed;
+    left: 0; /* Pegada al borde izquierdo cuando está cerrado */
+    top: 0;
+    height: 100vh;
+    z-index: 998; /* Debajo del sidebar */
 }
 
+/* Cuando el sidebar está activo, mover la línea */
+aside.active ~ .divider-line {
+    left: 280px; /* Se mueve junto con el sidebar */
+}
+
+/* ==========================================
+   12. CONTENEDOR PRINCIPAL
+   ========================================== */
 .main-container {
     flex: 1;
     display: flex;
     flex-direction: column;
     background: #f3f4f6;
+    margin-left: 0;
+    width: 100%;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
 }
 
+/* ==========================================
+   13. HEADER
+   ========================================== */
 header {
     background: white;
-    padding: 20px 40px;
+    padding: 15px 20px 15px 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid #e5e7eb;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .logo-section {
@@ -385,18 +461,27 @@ header {
 }
 
 .logo-icon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
     background: #E9D5FF;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+}
+
+.logo-icon svg {
+    width: 30px;
+    height: 30px;
 }
 
 .logo-text {
-    font-size: 36px;
+    font-size: 24px;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .search-box {
@@ -406,15 +491,32 @@ header {
     background: white;
     border: 2px solid #d1d5db;
     border-radius: 25px;
-    padding: 10px 20px;
+    padding: 8px 15px;
+    flex: 1;
+    max-width: 300px;
+    min-width: 0;
 }
 
 .search-box input {
     border: none;
     outline: none;
     font-size: 16px;
+    width: 100%;
+    min-width: 0;
 }
 
+.search-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: inline-block;
+    filter: grayscale(100%) brightness(80%);
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   14. SECCIÓN DESTACADAS
+   ========================================== */
 .destacadas-section {
     background: white;
     margin: 20px;
@@ -428,25 +530,20 @@ header {
     align-items: center;
     gap: 15px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .destacadas-header h2 {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     flex: 1;
+    min-width: 150px;
 }
 
 .star-icon {
-    width: 35px;
-    height: 35px;
-}
-
-.search-icon {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    display: inline-block;
-    filter: grayscale(100%) brightness(80%);
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
 }
 
 .destacadas-controls {
@@ -457,100 +554,32 @@ header {
 .BtnCarrusel {
     border: none;
     background: #e5e7eb;
-    padding: 6px 10px;
+    padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
-}
-
-.BtnCarrusel img {
-    width: 20px;
-    height: 20px;
-}
-
-.destacadas-content {
-    min-height: 200px;
-    border: 2px dashed #d1d5db;
-    border-radius: 8px;
-    padding: 20px;
     display: flex;
-    gap: 12px;
-    overflow-x: auto;
-}
-
-.body-content {
-    flex: 1;
-    margin: 0 20px 20px 20px;
-    background: white;
-    border-radius: 10px;
-    padding: 30px;
-    overflow-y: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.arrow {
-    font-size: 12px;
-    transition: transform 0.3s;
-}
-
-.arrow.rotated {
-    transform: rotate(-90deg);
-}
-
-/* Publicacion card */
-.card {
-    background: white;
-    padding: 16px;
-    border-radius: 10px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-    border: 2px solid transparent;
-    cursor: pointer;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s;
 }
 
-.card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.BtnCarrusel:hover {
+    background: #d1d5db;
 }
 
-.media {
-    width: 100%;
-    max-height: 320px;
-    object-fit: cover;
+.BtnCarrusel img {
+    width: 18px;
+    height: 18px;
+}
+
+.destacadas-content {
+    min-height: 150px;
+    border: 2px dashed #d1d5db;
     border-radius: 8px;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.publicacion.seleccionada {
-    border-color: #FB923C;
-    background: #fff7ed;
-}
-
-/* Votos */
-.votos {
+    padding: 15px;
     display: flex;
-    gap: 8px;
-    align-items: center;
-    margin-top: 8px;
-}
-
-.votos button {
-    border: none;
-    background: transparent;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-
-.votos button:hover {
-    background: #f3f4f6;
-}
-
-.votos .count {
-    font-weight: bold;
-    margin-left: 6px;
+    gap: 12px;
+    overflow-x: auto;
 }
 
 /* Carousel destacadas */
@@ -592,7 +621,82 @@ header {
     transform: translateY(-4px);
 }
 
-/* Botones de votos mejorados */
+/* ==========================================
+   15. ÁREA DE CONTENIDO (Publicaciones)
+   ========================================== */
+.body-content {
+    flex: 1;
+    margin: 0 20px 20px 20px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: calc(100vh - 350px);
+}
+
+/* ==========================================
+   16. TARJETAS DE PUBLICACIONES
+   ========================================== */
+.card {
+    background: white;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.publicacion.seleccionada {
+    border-color: #FB923C;
+    background: #fff7ed;
+}
+
+.media {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* ==========================================
+   17. SISTEMA DE VOTOS
+   ========================================== */
+.votos {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.votos button {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.votos button:hover {
+    background: #f3f4f6;
+}
+
+.votos .count {
+    font-weight: bold;
+    margin-left: 6px;
+}
+
 .btn-vote-up,
 .btn-vote-down {
     background: #f3f4f6;
@@ -618,76 +722,239 @@ header {
 }
 
 /* ==========================================
-   ESTILOS DE SIDEBAR Y USUARIO
+   18. PREVENIR SELECCIÓN NO DESEADA
    ========================================== */
-
-#userInfo {
-    padding: 20px;
-    border-top: 2px solid #e5e7eb;
-    margin-top: auto;
-    background: #f9fafb;
+.menu-toggle,
+.sidebar-overlay {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
 
-#userAvatar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+/* ==========================================
+   19. RESPONSIVE - MÓVILES PEQUEÑOS
+   ========================================== */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .menu-toggle {
+        width: 45px;
+        height: 45px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    header {
+        padding: 12px 15px 12px 70px;
+    }
+    
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    
+    .logo-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .logo-text {
+        font-size: 18px;
+    }
+    
+    .search-box {
+        width: 100%;
+        max-width: 100%;
+        order: 3;
+        flex-basis: 100%;
+        margin-top: 10px;
+    }
+    
+    .destacadas-section,
+    .body-content {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .destacadas-header h2 {
+        font-size: 20px;
+    }
+    
+    .star-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .card {
+        padding: 12px;
+    }
+    
+    .media {
+        max-height: 250px;
+    }
+    
+    .body-content {
+        min-height: calc(100vh - 250px);
+    }
 }
 
-#userAvatar:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    transform: translateY(-2px);
+/* ==========================================
+   20. RESPONSIVE - TABLETS
+   ========================================== */
+@media (min-width: 481px) and (max-width: 768px) {
+    header {
+        padding: 15px 20px 15px 75px;
+    }
+    
+    .logo-icon {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+        min-height: 45px;
+    }
+    
+    .logo-text {
+        font-size: 22px;
+    }
+    
+    .destacadas-section,
+    .body-content {
+        margin: 15px;
+        padding: 20px;
+    }
+    
+    .media {
+        max-height: 350px;
+    }
+    
+    .body-content {
+        min-height: calc(100vh - 300px);
+    }
 }
 
-#userAvatar .avatar-circle,
-.user-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+/* ==========================================
+   21. RESPONSIVE - MÓVILES Y TABLETS
+   ========================================== */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+    
+    aside {
+        left: -280px;
+    }
+    
+    aside.active {
+        left: 0;
+    }
+    
+    .main-container {
+        margin-left: 0;
+    }
+    
+    .divider-line {
+        left: 0; /* En móviles siempre al borde izquierdo */
+    }
+    
+    aside.active ~ .divider-line {
+        left: 280px; /* Se mueve con el sidebar */
+    }
+    
+    .body-content {
+        min-height: calc(100vh - 280px);
+    }
 }
 
-#userAvatar .avatar-info {
-    flex: 1;
-    min-width: 0;
+/* ==========================================
+   22. RESPONSIVE - DESKTOP
+   ========================================== */
+@media (min-width: 769px) {
+    .menu-toggle {
+        display: flex; /* Mantener visible en desktop también */
+    }
+    
+    aside {
+        left: -280px; /* Iniciar oculto */
+    }
+    
+    aside.active {
+        left: 0;
+    }
+    
+    .main-container {
+        margin-left: 0;
+    }
+    
+    header {
+        padding: 20px 40px 20px 80px;
+    }
+    
+    .logo-icon {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        min-height: 60px;
+    }
+    
+    .logo-icon svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .logo-text {
+        font-size: 36px;
+    }
+    
+    .destacadas-section,
+    .body-content {
+        margin: 20px;
+        padding: 30px;
+    }
+    
+    .destacadas-header h2 {
+        font-size: 32px;
+    }
+    
+    .star-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .body-content {
+        min-height: calc(100vh - 350px);
+    }
 }
 
-#userAvatar .avatar-info strong {
-    display: block;
-    font-size: 15px;
-    color: #1f2937;
-    font-weight: 700;
-    margin-bottom: 4px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+/* ==========================================
+   23. PREVENIR ZOOM EN INPUTS (iOS)
+   ========================================== */
+input,
+textarea,
+select,
+button {
+    font-size: 16px !important;
 }
 
-#userAvatar .avatar-info small {
-    font-size: 13px;
-    color: #6b7280;
-    font-weight: 500;
-    display: block;
+/* ==========================================
+   24. IMÁGENES Y VIDEOS RESPONSIVE
+   ========================================== */
+img,
+video {
+    max-width: 100%;
+    height: auto;
 }
 
-.ingresar-btn.logout {
-    background: #EF4444 !important;
-}
-
-.ingresar-btn.logout:hover {
-    background: #DC2626 !important;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+/* ==========================================
+   25. PREVENIR SCROLL HORIZONTAL
+   ========================================== */
+body,
+html,
+.main-container,
+.body-content {
+    overflow-x: hidden;
+    max-width: 100%;
 }

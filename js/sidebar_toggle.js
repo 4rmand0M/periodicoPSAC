@@ -1,7 +1,3 @@
-/**
- * SIDEBAR TOGGLE - Sistema de menú desplegable
- * Agregar este script a todas las páginas HTML
- */
 
 (function() {
     'use strict';
@@ -50,7 +46,7 @@
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         
         if (!sidebar) {
-            console.warn(' No se encontró el elemento <aside>');
+            console.warn('⚠️ No se encontró el elemento <aside>');
             return;
         }
         
