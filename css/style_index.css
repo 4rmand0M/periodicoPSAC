@@ -1,4 +1,3 @@
-
 /* ==========================================
    1. RESET Y BASE
    ========================================== */
@@ -116,7 +115,6 @@ aside.active {
     left: 0;
 }
 
-/* Scrollbar personalizado para el sidebar */
 aside::-webkit-scrollbar {
     width: 8px;
 }
@@ -138,7 +136,7 @@ aside::-webkit-scrollbar-thumb:hover {
    5. NAVEGACIÓN DEL SIDEBAR
    ========================================== */
 .nav-menu {
-    padding: 80px 0 20px 0; /* Espacio para el botón hamburguesa */
+    padding: 80px 0 20px 0;
 }
 
 .nav-item {
@@ -415,15 +413,14 @@ aside::-webkit-scrollbar-thumb:hover {
     background: white;
     transition: left 0.3s ease, background 0.5s ease;
     position: fixed;
-    left: 0; /* Pegada al borde izquierdo cuando está cerrado */
+    left: 0;
     top: 0;
     height: 100vh;
-    z-index: 998; /* Debajo del sidebar */
+    z-index: 998;
 }
 
-/* Cuando el sidebar está activo, mover la línea */
 aside.active ~ .divider-line {
-    left: 280px; /* Se mueve junto con el sidebar */
+    left: 280px;
 }
 
 /* ==========================================
@@ -572,6 +569,7 @@ header {
     height: 18px;
 }
 
+/* Contenedor de destacadas con scroll táctil mejorado */
 .destacadas-content {
     min-height: 150px;
     border: 2px dashed #d1d5db;
@@ -580,26 +578,51 @@ header {
     display: flex;
     gap: 12px;
     overflow-x: auto;
+    overflow-y: hidden;
+    
+    /* Scroll suave en móviles */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: #fb923c #f3f4f6;
+}
+
+/* Scrollbar personalizado */
+.destacadas-content::-webkit-scrollbar {
+    height: 6px;
+}
+
+.destacadas-content::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 4px;
+}
+
+.destacadas-content::-webkit-scrollbar-thumb {
+    background: #fb923c;
+    border-radius: 4px;
 }
 
 /* Carousel destacadas */
 #carouselDestacadas {
     display: flex;
     gap: 12px;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start;
     min-height: 120px;
 }
 
 .dest-item {
     width: 180px;
+    min-width: 180px;
     flex: 0 0 auto;
     border-radius: 8px;
     padding: 8px;
     background: #fff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
 }
 
 .dest-item:hover {
@@ -614,16 +637,102 @@ header {
     object-fit: cover;
     border-radius: 6px;
     display: block;
+    pointer-events: none;
 }
 
+/* Preview de texto en destacados */
+.dest-item .dest-text-preview {
+    height: 90px;
+    padding: 8px;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #374151;
+    overflow: hidden;
+    position: relative;
+}
+
+.dest-item .dest-text-preview::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, #e5e7eb);
+}
+
+.dest-item .dest-info {
+    padding-top: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #1f2937;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Selección con borde de color según área */
 .dest-item.selected {
-    outline: 3px solid #f59e0b;
+    outline: 3px solid var(--area-color, #fb923c);
     transform: translateY(-4px);
+    box-shadow: 0 0 0 6px rgba(251, 146, 60, 0.1);
 }
 
 /* ==========================================
    15. ÁREA DE CONTENIDO (Publicaciones)
    ========================================== */
+
+/* Grid estilo Pinterest/Masonry para Desktop */
+@media (min-width: 769px) {
+    .body-content {
+        column-count: 3;
+        column-gap: 20px;
+        padding: 20px;
+    }
+    
+    .card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+        display: inline-block;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .body-content {
+        column-count: 4;
+    }
+}
+
+/* Móviles y tablets: grid simple */
+@media (max-width: 768px) {
+    .body-content {
+        column-count: 1;
+        display: block;
+    }
+    
+    .card {
+        break-inside: auto;
+        page-break-inside: auto;
+        display: block;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .body-content {
+        column-count: 2;
+        column-gap: 15px;
+    }
+}
+
 .body-content {
     flex: 1;
     margin: 0 20px 20px 20px;
@@ -646,7 +755,7 @@ header {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     border: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
@@ -655,17 +764,38 @@ header {
 }
 
 .publicacion.seleccionada {
-    border-color: #FB923C;
-    background: #fff7ed;
+    border-color: var(--area-color, #FB923C);
+    background: rgba(251, 146, 60, 0.05);
+    box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.1);
 }
 
+/* Imágenes y videos que se adaptan naturalmente */
 .media {
     width: 100%;
-    max-height: 400px;
-    object-fit: contain;
+    height: auto;
+    max-height: none;
+    object-fit: cover;
     border-radius: 8px;
     display: block;
     margin-bottom: 10px;
+}
+
+/* Videos mantienen aspect ratio */
+.card video {
+    aspect-ratio: 16/9;
+    max-height: 600px;
+}
+
+/* Mejora visual del área label */
+.card small {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--area-color, #e5e7eb);
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 12px;
+    margin-top: 8px;
 }
 
 /* ==========================================
@@ -722,7 +852,21 @@ header {
 }
 
 /* ==========================================
-   18. PREVENIR SELECCIÓN NO DESEADA
+   18. COLORES POR ÁREA
+   ========================================== */
+.area-informatica { --area-color: #FCD34D; }
+.area-mercadeo { --area-color: #FB923C; }
+.area-contabilidad { --area-color: #EF4444; }
+.area-logistica { --area-color: #4ADE80; }
+.area-turismo { --area-color: #22D3EE; }
+.area-acondicionamiento { --area-color: #000000; }
+.area-lengua { --area-color: #6366F1; }
+.area-matematica { --area-color: #A855F7; }
+.area-sociales { --area-color: #D946EF; }
+.area-naturales { --area-color: #22C55E; }
+
+/* ==========================================
+   19. PREVENIR SELECCIÓN NO DESEADA
    ========================================== */
 .menu-toggle,
 .sidebar-overlay {
@@ -732,7 +876,7 @@ header {
 }
 
 /* ==========================================
-   19. RESPONSIVE - MÓVILES PEQUEÑOS
+   20. RESPONSIVE - MÓVILES PEQUEÑOS
    ========================================== */
 @media (max-width: 480px) {
     body {
@@ -793,17 +937,25 @@ header {
         padding: 12px;
     }
     
-    .media {
-        max-height: 250px;
-    }
-    
     .body-content {
         min-height: calc(100vh - 250px);
+    }
+    
+    .dest-item {
+        width: 160px;
+        min-width: 160px;
+    }
+    
+    /* Asegurar scroll táctil en móvil */
+    .destacadas-content {
+        touch-action: pan-x;
+        -webkit-user-select: none;
+        user-select: none;
     }
 }
 
 /* ==========================================
-   20. RESPONSIVE - TABLETS
+   21. RESPONSIVE - TABLETS
    ========================================== */
 @media (min-width: 481px) and (max-width: 768px) {
     header {
@@ -827,17 +979,18 @@ header {
         padding: 20px;
     }
     
-    .media {
-        max-height: 350px;
-    }
-    
     .body-content {
         min-height: calc(100vh - 300px);
+    }
+    
+    .dest-item {
+        width: 170px;
+        min-width: 170px;
     }
 }
 
 /* ==========================================
-   21. RESPONSIVE - MÓVILES Y TABLETS
+   22. RESPONSIVE - MÓVILES Y TABLETS
    ========================================== */
 @media (max-width: 768px) {
     .menu-toggle {
@@ -857,11 +1010,11 @@ header {
     }
     
     .divider-line {
-        left: 0; /* En móviles siempre al borde izquierdo */
+        left: 0;
     }
     
     aside.active ~ .divider-line {
-        left: 280px; /* Se mueve con el sidebar */
+        left: 280px;
     }
     
     .body-content {
@@ -870,15 +1023,15 @@ header {
 }
 
 /* ==========================================
-   22. RESPONSIVE - DESKTOP
+   23. RESPONSIVE - DESKTOP
    ========================================== */
 @media (min-width: 769px) {
     .menu-toggle {
-        display: flex; /* Mantener visible en desktop también */
+        display: flex;
     }
     
     aside {
-        left: -280px; /* Iniciar oculto */
+        left: -280px;
     }
     
     aside.active {
@@ -930,7 +1083,7 @@ header {
 }
 
 /* ==========================================
-   23. PREVENIR ZOOM EN INPUTS (iOS)
+   24. PREVENIR ZOOM EN INPUTS (iOS)
    ========================================== */
 input,
 textarea,
@@ -940,7 +1093,7 @@ button {
 }
 
 /* ==========================================
-   24. IMÁGENES Y VIDEOS RESPONSIVE
+   25. IMÁGENES Y VIDEOS RESPONSIVE
    ========================================== */
 img,
 video {
@@ -949,7 +1102,7 @@ video {
 }
 
 /* ==========================================
-   25. PREVENIR SCROLL HORIZONTAL
+   26. PREVENIR SCROLL HORIZONTAL
    ========================================== */
 body,
 html,

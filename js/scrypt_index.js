@@ -1,6 +1,5 @@
 /* —————————————
    Fallback mínimo para `notify`
-   Si tienes notification_system.js cargado este bloque NO hará nada.
    ————————————— */
 if (typeof notify === 'undefined') {
     console.warn('notify no encontrado — usando fallback mínimo (consola/alert).');
@@ -11,7 +10,6 @@ if (typeof notify === 'undefined') {
         info: (msg, title) => { console.log('INFO:', title || '', msg); },
         loading: (msg, title) => {
             console.log('LOADING:', title || '', msg);
-            // devuelve id para que remove funcione
             return 'loading_' + Date.now();
         },
         remove: (id) => { console.log('REMOVE NOTIF:', id); },
@@ -24,12 +22,36 @@ if (typeof notify === 'undefined') {
 }
 
 /* =========================
+   Mapa de colores por área
+   ========================= */
+const AREA_COLORS = {
+    'informatica': '#FCD34D',
+    'mercadeo': '#FB923C',
+    'contabilidad': '#EF4444',
+    'logistica': '#4ADE80',
+    'turismo': '#22D3EE',
+    'acondicionamiento': '#000000',
+    'lengua': '#6366F1',
+    'matematica': '#A855F7',
+    'sociales': '#D946EF',
+    'naturales': '#22C55E'
+};
+
+/* =========================
+   Obtener color según área
+   ========================= */
+function getAreaColor(area) {
+    const normalizedArea = (area || 'general').toLowerCase().trim();
+    return AREA_COLORS[normalizedArea] || '#FB923C';
+}
+
+/* =========================
    Variables globales
    ========================= */
 let usuarioActual = null;
 let seleccionada = null;
 let carouselIndex = 0;
-window.areasSelected = []; // array de áreas seleccionadas
+window.areasSelected = [];
 
 /* =========================
    Inicialización DOM
@@ -38,7 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('✅ DOMContentLoaded');
     await verificarSesion();
     setupEventListeners();
-    // Attach listeners to filter checkboxes (si existen)
     document.querySelectorAll('.filter-item input[type="checkbox"]').forEach(cb => {
         cb.addEventListener('change', updateFilters);
     });
@@ -52,7 +73,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function verificarSesion() {
     try {
         console.log('🔍 Verificando sesión...');
-        const response = await fetch('../Connection/check_session.php', { cache: 'no-store' });
+        const response = await fetch('../Connection/check_session.php', { 
+            cache: 'no-store',
+            credentials: 'same-origin'
+        });
         const data = await response.json();
         console.log('📊 check_session ->', data);
 
@@ -80,7 +104,6 @@ function mostrarUsuarioLogueado() {
     const btnIngresar = document.querySelector('.ingresar-btn');
     if (!btnIngresar) return;
 
-    // Estilo para convertirlo en botón de salir
     btnIngresar.style.background = "#EF4444";
     btnIngresar.style.color = "white";
     btnIngresar.style.fontWeight = "700";
@@ -92,18 +115,15 @@ function mostrarUsuarioLogueado() {
     btnIngresar.style.cursor = "pointer";
     btnIngresar.style.fontSize = "14px";
 
-    // SOLO texto de salir
     btnIngresar.innerHTML = "🚪 Salir";
 
-    // Acción para cerrar sesión
     btnIngresar.onclick = () => {
         window.location.href = "../Connection/logout.php";
     };
 }
 
-
 /* =========================
-   Mostrar / ocultar controles según rol
+   Mostrar / ocultar controles
    ========================= */
 function mostrarControlesEditor() {
     const sectionPublicar = document.getElementById('section-publicar');
@@ -152,84 +172,81 @@ function generarColor(nombre) {
    Setup event listeners
    ========================= */
 function setupEventListeners() {
-
-    // Botón eliminar
+    // Botón eliminar - CORREGIDO
     const btnEliminar = document.getElementById("btnEliminar");
-
     if (btnEliminar) {
-
         btnEliminar.onclick = async function () {
-    if (!usuarioActual) {
-        notify.warning("Debes iniciar sesión para eliminar publicaciones", "Acción no permitida");
-        return;
-    }
-
-    if (!seleccionada) {
-        notify.warning("Selecciona una publicación primero", "Ninguna seleccionada");
-        return;
-    }
-
-    notify.confirm({
-        title: "¿Eliminar publicación?",
-        message: "Esta acción no se puede deshacer. ¿Deseas continuar?",
-        confirmText: "Eliminar",
-        cancelText: "Cancelar",
-        onConfirm: async () => {
-            let id = seleccionada.getAttribute("data-id");
-            const loadingId = notify.loading("Eliminando publicación...");
-
-            try {
-                let r = await fetch("../Connection/eliminar_publicacion.php?id=" + id);
-                let t = await r.text();
-                notify.remove(loadingId);
-
-                if (t.includes("OK")) {
-                    notify.success("Publicación eliminada con éxito", "Éxito");
-                    seleccionada = null;
-                    cargarPublicaciones();
-                } else {
-                    notify.error("Error al eliminar la publicación", "Error");
+            // Verificar sesión primero
+            if (!usuarioActual) {
+                // Re-verificar sesión por si acaso
+                await verificarSesion();
+                
+                if (!usuarioActual) {
+                    notify.warning("Debes iniciar sesión para eliminar publicaciones", "Acción no permitida");
+                    return;
                 }
-            } catch (err) {
-                notify.remove(loadingId);
-                notify.error("Error de conexión al eliminar", "Error");
-                console.error(err);
             }
-        }
-    });
-}
-}
 
+            if (!seleccionada) {
+                notify.warning("Selecciona una publicación primero", "Ninguna seleccionada");
+                return;
+            }
 
-// *** activar eventos ***
-document.addEventListener("DOMContentLoaded", () => {
-    setupEventListeners();
-});
+            notify.confirm({
+                title: "¿Eliminar publicación?",
+                message: "Esta acción no se puede deshacer. ¿Deseas continuar?",
+                confirmText: "Eliminar",
+                cancelText: "Cancelar",
+                onConfirm: async () => {
+                    let id = seleccionada.getAttribute("data-id");
+                    const loadingId = notify.loading("Eliminando publicación...");
 
+                    try {
+                        let r = await fetch("../Connection/eliminar_publicacion.php?id=" + id, {
+                            credentials: 'same-origin'
+                        });
+                        let t = await r.text();
+                        notify.remove(loadingId);
 
-    // Controles del carousel (prev / next)
+                        if (t.includes("OK")) {
+                            notify.success("Publicación eliminada con éxito", "Éxito");
+                            seleccionada = null;
+                            cargarPublicaciones();
+                        } else {
+                            notify.error("Error al eliminar la publicación", "Error");
+                        }
+                    } catch (err) {
+                        notify.remove(loadingId);
+                        notify.error("Error de conexión al eliminar", "Error");
+                        console.error(err);
+                    }
+                }
+            });
+        };
+    }
+
+    // Controles del carousel con scroll suave
     const prevDest = document.getElementById("prevDest");
     const nextDest = document.getElementById("nextDest");
+    const container = document.getElementById("carouselDestacadas");
 
-    if (prevDest) {
+    if (prevDest && container) {
         prevDest.onclick = function () {
-            const items = document.querySelectorAll('.dest-item');
-            if (!items.length) return;
-            carouselIndex = Math.max(0, carouselIndex - 1);
-            items[carouselIndex].scrollIntoView({ behavior: "smooth", inline: "center" });
+            container.scrollBy({
+                left: -200,
+                behavior: 'smooth'
+            });
         };
     }
-    if (nextDest) {
+    
+    if (nextDest && container) {
         nextDest.onclick = function () {
-            const items = document.querySelectorAll('.dest-item');
-            if (!items.length) return;
-            carouselIndex = Math.min(items.length - 1, carouselIndex + 1);
-            items[carouselIndex].scrollIntoView({ behavior: "smooth", inline: "center" });
+            container.scrollBy({
+                left: 200,
+                behavior: 'smooth'
+            });
         };
     }
-
-    // Toggle sections (si hay botones que lo llamen, se usa desde el HTML)
-    // No añadimos listener aquí porque toggleSection se invoca desde HTML con onclick
 }
 
 /* =========================
@@ -292,7 +309,7 @@ function updateDividerLine(colors) {
 }
 
 /* =========================
-   Cargar publicaciones (lista)
+   Cargar publicaciones mejorado
    ========================= */
 async function cargarPublicaciones() {
     try {
@@ -311,6 +328,11 @@ async function cargarPublicaciones() {
             const html = document.createElement('div');
             html.className = "card publicacion";
             html.setAttribute("data-id", p.id || '');
+            html.setAttribute("data-area", (p.area || 'general').toLowerCase());
+            
+            // Añadir clase de área
+            const areaClass = 'area-' + (p.area || 'general').toLowerCase().replace(/\s+/g, '');
+            html.classList.add(areaClass);
 
             html.innerHTML = `
                 ${p.tipo === "imagen" && p.archivo ? `<img src="../Connection/uploads/${p.archivo}" class="media">` : ""}
@@ -332,6 +354,7 @@ async function cargarPublicaciones() {
         attachVoteButtons();
         cargarVotosParaLista(posts);
         construirCarousel(posts);
+        mejorarScrollDestacadas();
         aplicarFiltroActivo();
     } catch (err) {
         console.error('Error al cargar publicaciones:', err);
@@ -340,15 +363,24 @@ async function cargarPublicaciones() {
 }
 
 /* =========================
-   Selección de tarjeta
+   Activar selección con colores
    ========================= */
 function activarSeleccion() {
     const cards = document.querySelectorAll(".publicacion");
     cards.forEach(card => {
         card.onclick = function (e) {
             if (e.target && e.target.tagName === 'BUTTON') return;
+            
             if (seleccionada) seleccionada.classList.remove("seleccionada");
             seleccionada = this;
+            
+            // Obtener área y aplicar color
+            const smallText = this.querySelector('small')?.innerText || '';
+            const match = smallText.match(/Área:\s*([^\s•]+)/i);
+            const area = match ? match[1].toLowerCase() : 'general';
+            const areaColor = getAreaColor(area);
+            
+            this.style.setProperty('--area-color', areaColor);
             this.classList.add("seleccionada");
         };
     });
@@ -404,7 +436,7 @@ function attachVoteButtons() {
 }
 
 /* =========================
-   Cargar conteos de votos por lista
+   Cargar conteos de votos
    ========================= */
 async function cargarVotosParaLista(posts) {
     if (!posts || !posts.length) return;
@@ -425,7 +457,7 @@ async function cargarVotosParaLista(posts) {
 }
 
 /* =========================
-   Carousel de destacadas
+   Construcción mejorada del carousel
    ========================= */
 function construirCarousel(posts) {
     const dest = document.getElementById("carouselDestacadas");
@@ -442,28 +474,127 @@ function construirCarousel(posts) {
         const div = document.createElement("div");
         div.className = "dest-item";
         div.setAttribute("data-id", p.id || '');
+        div.setAttribute("data-area", (p.area || 'general').toLowerCase());
+        
+        const areaClass = 'area-' + (p.area || 'general').toLowerCase().replace(/\s+/g, '');
+        div.classList.add(areaClass);
+        
+        // Generar contenido según tipo
+        let contentHTML = '';
+        
+        if (p.tipo === 'imagen' && p.archivo) {
+            contentHTML = `<img src="../Connection/uploads/${p.archivo}" alt="${p.area}">`;
+        } else if (p.tipo === 'video' && p.archivo) {
+            contentHTML = `<video src="../Connection/uploads/${p.archivo}" muted></video>`;
+        } else {
+            // Preview de texto
+            const previewText = (p.contenido || 'Sin contenido').substring(0, 60) + '...';
+            contentHTML = `<div class="dest-text-preview">${previewText}</div>`;
+        }
+        
         div.innerHTML = `
-            ${p.tipo === 'imagen' && p.archivo ? `<img src="../Connection/uploads/${p.archivo}" alt="">` :
-              p.tipo === 'video' && p.archivo ? `<video src="../Connection/uploads/${p.archivo}" muted></video>` :
-              `<div style="height:90px; display:flex; align-items:center; justify-content:center; background:#f3f4f6;">TEXTO</div>`}
-            <div style="padding-top:6px; font-weight:600;">${p.area || 'general'}</div>
+            ${contentHTML}
+            <div class="dest-info">${p.area || 'general'}</div>
         `;
-        div.onclick = function () {
+        
+        // Click simple solo selecciona
+        div.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             document.querySelectorAll('.dest-item').forEach(d => d.classList.remove('selected'));
             this.classList.add('selected');
-
+            
+            const areaColor = getAreaColor(p.area);
+            this.style.setProperty('--area-color', areaColor);
+        };
+        
+        // Doble click para ir a la publicación
+        div.ondblclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             const card = document.querySelector(".publicacion[data-id='" + p.id + "']");
             if (card) {
                 if (seleccionada) seleccionada.classList.remove('seleccionada');
                 seleccionada = card;
+                
+                const areaColor = getAreaColor(p.area);
+                card.style.setProperty('--area-color', areaColor);
+                
                 seleccionada.classList.add('seleccionada');
                 seleccionada.scrollIntoView({ behavior: "smooth", block: "center" });
             }
         };
+        
         dest.appendChild(div);
     });
 
-    if (dest.firstChild) dest.firstChild.classList.add('selected');
+    if (dest.firstChild) {
+        dest.firstChild.classList.add('selected');
+        const firstArea = dest.firstChild.getAttribute('data-area');
+        const firstColor = getAreaColor(firstArea);
+        dest.firstChild.style.setProperty('--area-color', firstColor);
+    }
+}
+
+/* =========================
+   Mejorar scroll touch en destacadas
+   ========================= */
+function mejorarScrollDestacadas() {
+    const container = document.getElementById('carouselDestacadas');
+    if (!container) return;
+    
+    let isScrolling = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    
+    container.addEventListener('touchstart', (e) => {
+        isScrolling = true;
+        startX = e.touches[0].pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+        container.style.cursor = 'grabbing';
+    }, { passive: true });
+    
+    container.addEventListener('touchmove', (e) => {
+        if (!isScrolling) return;
+        
+        const x = e.touches[0].pageX - container.offsetLeft;
+        const walk = (x - startX) * 2;
+        container.scrollLeft = scrollLeft - walk;
+    }, { passive: true });
+    
+    container.addEventListener('touchend', () => {
+        isScrolling = false;
+        container.style.cursor = 'grab';
+    });
+    
+    container.addEventListener('mousedown', (e) => {
+        isScrolling = true;
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+        container.style.cursor = 'grabbing';
+    });
+    
+    container.addEventListener('mouseleave', () => {
+        isScrolling = false;
+        container.style.cursor = 'grab';
+    });
+    
+    container.addEventListener('mouseup', () => {
+        isScrolling = false;
+        container.style.cursor = 'grab';
+    });
+    
+    container.addEventListener('mousemove', (e) => {
+        if (!isScrolling) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2;
+        container.scrollLeft = scrollLeft - walk;
+    });
+    
+    container.style.cursor = 'grab';
 }
 
 /* =========================
@@ -491,14 +622,16 @@ function aplicarFiltroActivo() {
 }
 
 /* =========================
-   Refrescar todo (helper público)
+   Refrescar todo
    ========================= */
 window.refrescarTodo = function () {
     updateFilters();
     cargarPublicaciones();
 };
 
-// Mostrar info del usuario en el sidebar
+/* =========================
+   Mostrar info del usuario
+   ========================= */
 function mostrarInfoUsuario(user) {
     const userAvatar = document.getElementById('userAvatar');
     const iniciales = obtenerIniciales(user.nombre || user.username);
@@ -513,30 +646,4 @@ function mostrarInfoUsuario(user) {
             <small>${user.rol === 'admin' ? '👑 Administrador' : '✏️ Editor'}</small>
         </div>
     `;
-}
-
-// Obtener iniciales del nombre
-function obtenerIniciales(nombre) {
-    const palabras = nombre.trim().split(' ');
-    if (palabras.length >= 2) {
-        return palabras[0][0] + palabras[1][0];
-    }
-    return nombre.substring(0, 2);
-}
-
-// Generar color basado en el nombre
-function generarColor(nombre) {
-    const colores = [
-        '#EF4444', '#F97316', '#F59E0B', '#EAB308', '#84CC16',
-        '#22C55E', '#10B981', '#14B8A6', '#06B6D4', '#0EA5E9',
-        '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#D946EF',
-        '#EC4899', '#F43F5E'
-    ];
-    
-    let hash = 0;
-    for (let i = 0; i < nombre.length; i++) {
-        hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    
-    return colores[Math.abs(hash) % colores.length];
 }

@@ -46,7 +46,7 @@
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         
         if (!sidebar) {
-            console.warn('⚠️ No se encontró el elemento <aside>');
+            notify.warning('⚠️ No se encontró el elemento <aside>');
             return;
         }
         
