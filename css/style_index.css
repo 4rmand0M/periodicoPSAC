@@ -569,7 +569,6 @@ header {
     height: 18px;
 }
 
-/* Contenedor de destacadas con scroll táctil mejorado */
 .destacadas-content {
     min-height: 150px;
     border: 2px dashed #d1d5db;
@@ -579,8 +578,6 @@ header {
     gap: 12px;
     overflow-x: auto;
     overflow-y: hidden;
-    
-    /* Scroll suave en móviles */
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
@@ -588,7 +585,6 @@ header {
     scrollbar-color: #fb923c #f3f4f6;
 }
 
-/* Scrollbar personalizado */
 .destacadas-content::-webkit-scrollbar {
     height: 6px;
 }
@@ -603,7 +599,6 @@ header {
     border-radius: 4px;
 }
 
-/* Carousel destacadas */
 #carouselDestacadas {
     display: flex;
     gap: 12px;
@@ -640,7 +635,6 @@ header {
     pointer-events: none;
 }
 
-/* Preview de texto en destacados */
 .dest-item .dest-text-preview {
     height: 90px;
     padding: 8px;
@@ -678,7 +672,6 @@ header {
     white-space: nowrap;
 }
 
-/* Selección con borde de color según área */
 .dest-item.selected {
     outline: 3px solid var(--area-color, #fb923c);
     transform: translateY(-4px);
@@ -689,50 +682,7 @@ header {
    15. ÁREA DE CONTENIDO (Publicaciones)
    ========================================== */
 
-/* Grid estilo Pinterest/Masonry para Desktop */
-@media (min-width: 769px) {
-    .body-content {
-        column-count: 3;
-        column-gap: 20px;
-        padding: 20px;
-    }
-    
-    .card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        margin-bottom: 20px;
-        display: inline-block;
-        width: 100%;
-    }
-}
-
-@media (min-width: 1200px) {
-    .body-content {
-        column-count: 4;
-    }
-}
-
-/* Móviles y tablets: grid simple */
-@media (max-width: 768px) {
-    .body-content {
-        column-count: 1;
-        display: block;
-    }
-    
-    .card {
-        break-inside: auto;
-        page-break-inside: auto;
-        display: block;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-    .body-content {
-        column-count: 2;
-        column-gap: 15px;
-    }
-}
-
+/* LAYOUT NORMAL - Sin masonry por defecto */
 .body-content {
     flex: 1;
     margin: 0 20px 20px 20px;
@@ -769,7 +719,6 @@ header {
     box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.1);
 }
 
-/* Imágenes y videos que se adaptan naturalmente */
 .media {
     width: 100%;
     height: auto;
@@ -780,14 +729,13 @@ header {
     margin-bottom: 10px;
 }
 
-/* Videos mantienen aspect ratio */
 .card video {
     aspect-ratio: 16/9;
     max-height: 600px;
 }
 
-/* Mejora visual del área label */
-.card small {
+/* Badge del área - SIN AFECTAR AL TEXTO DEL AUTOR */
+.card .area-badge {
     display: inline-block;
     padding: 4px 8px;
     border-radius: 4px;
@@ -796,6 +744,13 @@ header {
     font-weight: 600;
     font-size: 12px;
     margin-top: 8px;
+}
+
+/* Texto del autor - SIN background ni color especial */
+.card .autor-info {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
 }
 
 /* ==========================================
@@ -854,16 +809,16 @@ header {
 /* ==========================================
    18. COLORES POR ÁREA
    ========================================== */
-.area-informatica { --area-color: #FCD34D; }
-.area-mercadeo { --area-color: #FB923C; }
-.area-contabilidad { --area-color: #EF4444; }
-.area-logistica { --area-color: #4ADE80; }
-.area-turismo { --area-color: #22D3EE; }
-.area-acondicionamiento { --area-color: #000000; }
-.area-lengua { --area-color: #6366F1; }
-.area-matematica { --area-color: #A855F7; }
-.area-sociales { --area-color: #D946EF; }
-.area-naturales { --area-color: #22C55E; }
+.area-Informática { --area-color: #FCD34D; }
+.area-Mercadeo { --area-color: #FB923C; }
+.area-Contabilidad { --area-color: #EF4444; }
+.area-Logística { --area-color: #4ADE80; }
+.area-Turismo { --area-color: #22D3EE; }
+.area-Acondicionamiento { --area-color: #0e004b; }
+.area-Lengua { --area-color: #6366F1; }
+.area-Matemáticas { --area-color: #A855F7; }
+.area-Sociales { --area-color: #D946EF; }
+.area-Naturales { --area-color: #22C55E; }
 
 /* ==========================================
    19. PREVENIR SELECCIÓN NO DESEADA
@@ -946,7 +901,6 @@ header {
         min-width: 160px;
     }
     
-    /* Asegurar scroll táctil en móvil */
     .destacadas-content {
         touch-action: pan-x;
         -webkit-user-select: none;

@@ -25,16 +25,16 @@ if (typeof notify === 'undefined') {
    Mapa de colores por área
    ========================= */
 const AREA_COLORS = {
-    'informatica': '#FCD34D',
-    'mercadeo': '#FB923C',
-    'contabilidad': '#EF4444',
-    'logistica': '#4ADE80',
-    'turismo': '#22D3EE',
-    'acondicionamiento': '#000000',
-    'lengua': '#6366F1',
-    'matematica': '#A855F7',
-    'sociales': '#D946EF',
-    'naturales': '#22C55E'
+    'Informática': '#FCD34D',
+    'Mercadeo': '#FB923C',
+    'Contabilidad': '#EF4444',
+    'Logística': '#4ADE80',
+    'Turismo': '#22D3EE',
+    'Acondicionamiento': '#0e004b',
+    'Lengua': '#6366F1',
+    'Matemáticas': '#A855F7',
+    'Sociales': '#D946EF',
+    'Naturales': '#22C55E'
 };
 
 /* =========================
@@ -42,7 +42,7 @@ const AREA_COLORS = {
    ========================= */
 function getAreaColor(area) {
     const normalizedArea = (area || 'general').toLowerCase().trim();
-    return AREA_COLORS[normalizedArea] || '#FB923C';
+    return AREA_COLORS[normalizedArea] || '#fbff00ff';
 }
 
 /* =========================
@@ -174,55 +174,28 @@ function generarColor(nombre) {
 function setupEventListeners() {
     // Botón eliminar - CORREGIDO
     const btnEliminar = document.getElementById("btnEliminar");
-    if (btnEliminar) {
-        btnEliminar.onclick = async function () {
-            // Verificar sesión primero
-            if (!usuarioActual) {
-                // Re-verificar sesión por si acaso
-                await verificarSesion();
-                
-                if (!usuarioActual) {
-                    notify.warning("Debes iniciar sesión para eliminar publicaciones", "Acción no permitida");
-                    return;
-                }
-            }
-
-            if (!seleccionada) {
-                notify.warning("Selecciona una publicación primero", "Ninguna seleccionada");
-                return;
-            }
-
-            notify.confirm({
-                title: "¿Eliminar publicación?",
-                message: "Esta acción no se puede deshacer. ¿Deseas continuar?",
-                confirmText: "Eliminar",
-                cancelText: "Cancelar",
-                onConfirm: async () => {
-                    let id = seleccionada.getAttribute("data-id");
-                    const loadingId = notify.loading("Eliminando publicación...");
-
-                    try {
-                        let r = await fetch("../Connection/eliminar_publicacion.php?id=" + id, {
-                            credentials: 'same-origin'
-                        });
-                        let t = await r.text();
-                        notify.remove(loadingId);
-
-                        if (t.includes("OK")) {
-                            notify.success("Publicación eliminada con éxito", "Éxito");
-                            seleccionada = null;
-                            cargarPublicaciones();
-                        } else {
-                            notify.error("Error al eliminar la publicación", "Error");
-                        }
-                    } catch (err) {
-                        notify.remove(loadingId);
-                        notify.error("Error de conexión al eliminar", "Error");
-                        console.error(err);
-                    }
-                }
-            });
-        };
+       document.getElementById("btnEliminar").onclick = async function() {
+        if (!seleccionada) { 
+            notify.error("Selecciona una publicación primero"); 
+            return; 
+        }
+        if (!confirm("¿Eliminar publicación?")) return;
+        
+        let id = seleccionada.getAttribute("data-id");
+        let r = await fetch("../Connection/eliminar_publicacion.php?id=" + id);
+        let t = await r.text();
+        
+        if (t.includes("OK")) { 
+            alert("Eliminada correctamente"); 
+            seleccionada = null;
+            cargarPublicaciones(); 
+        } else {
+            alert("Error al eliminar");
+        }
+    };
+    
+    updateFilters();
+    cargarPublicaciones();
     }
 
     // Controles del carousel con scroll suave
@@ -247,7 +220,6 @@ function setupEventListeners() {
             });
         };
     }
-}
 
 /* =========================
    toggleSection (UI)
@@ -365,26 +337,7 @@ async function cargarPublicaciones() {
 /* =========================
    Activar selección con colores
    ========================= */
-function activarSeleccion() {
-    const cards = document.querySelectorAll(".publicacion");
-    cards.forEach(card => {
-        card.onclick = function (e) {
-            if (e.target && e.target.tagName === 'BUTTON') return;
-            
-            if (seleccionada) seleccionada.classList.remove("seleccionada");
-            seleccionada = this;
-            
-            // Obtener área y aplicar color
-            const smallText = this.querySelector('small')?.innerText || '';
-            const match = smallText.match(/Área:\s*([^\s•]+)/i);
-            const area = match ? match[1].toLowerCase() : 'general';
-            const areaColor = getAreaColor(area);
-            
-            this.style.setProperty('--area-color', areaColor);
-            this.classList.add("seleccionada");
-        };
-    });
-}
+
 
 /* =========================
    Botones de voto
@@ -457,7 +410,7 @@ async function cargarVotosParaLista(posts) {
 }
 
 /* =========================
-   Construcción mejorada del carousel
+   Construcción del carousel
    ========================= */
 function construirCarousel(posts) {
     const dest = document.getElementById("carouselDestacadas");
@@ -539,7 +492,7 @@ function construirCarousel(posts) {
 }
 
 /* =========================
-   Mejorar scroll touch en destacadas
+scroll touch en destacadas
    ========================= */
 function mejorarScrollDestacadas() {
     const container = document.getElementById('carouselDestacadas');
