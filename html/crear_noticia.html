@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Noticia - PSAC</title>
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/style_subir.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+    <script src="../js/notification_system.js"></script>
+    <style>
+        .galeria-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .galeria-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .galeria-item img,
+        .galeria-item video {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .galeria-item-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        .galeria-item-remove:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="">
+                <span>Inicio</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>Noticias</span>
+            </a>
+        </nav>
+
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar"></div>
+        </div>
+    </aside>
+    
+    <div class="divider-line"></div>
+    
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">Crear Noticia</h1>
+            </div>
+        </header>
+
+        <div class="body-content">
+            <div class="form-container">
+                <h1>📰 Nueva Noticia</h1>
+                
+                <form id="formCrearNoticia" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="titulo">Título de la Noticia *</label>
+                        <input type="text" id="titulo" name="titulo" required 
+                               placeholder="Ej: Gran evento deportivo en el PSAC">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripción Corta *</label>
+                        <textarea id="descripcion" name="descripcion" required 
+                                  style="min-height: 80px;"
+                                  placeholder="Breve resumen de la noticia (máx. 200 caracteres)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria">Categoría *</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="general">General</option>
+                            <option value="informatica">Informática</option>
+                            <option value="deportes">Deportes</option>
+                            <option value="cultura">Cultura</option>
+                            <option value="mercadeo">Mercadeo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contenido">Contenido de la Noticia *</label>
+                        <textarea id="contenido" name="contenido" required 
+                                  placeholder="Escribe aquí el contenido completo de la noticia..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imagenPrincipal">Imagen o Video Principal * (obligatorio)</label>
+                        <input type="file" id="imagenPrincipal" name="imagen_principal" 
+                               accept="image/*,video/*" required>
+                        <div class="file-info">La noticia debe tener al menos una imagen o video principal</div>
+                        <div class="preview-container" id="previewPrincipal"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="galeriaAdicional">Galería Adicional (opcional)</label>
+                        <input type="file" id="galeriaAdicional" 
+                               accept="image/*,video/*" multiple>
+                        <div class="file-info">Puedes agregar múltiples imágenes y videos adicionales</div>
+                        <div class="galeria-preview" id="galeriaPreview"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">📰 Publicar Noticia</button>
+                        <button type="button" class="btn-cancel" onclick="window.location.href='noticias.html'">✗ Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/scrypt_crear_noticia.js"></script>
+    <script src="../js/sidebar_common.js"></script>
+</body>
+</html>

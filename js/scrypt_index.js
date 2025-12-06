@@ -42,7 +42,7 @@ const AREA_COLORS = {
    ========================= */
 function getAreaColor(area) {
     const normalizedArea = (area || 'general').toLowerCase().trim();
-    return AREA_COLORS[normalizedArea] || '#fbff00ff';
+    return AREA_COLORS[normalizedArea] || '';
 }
 
 /* =========================
@@ -301,6 +301,10 @@ async function cargarPublicaciones() {
             html.className = "card publicacion";
             html.setAttribute("data-id", p.id || '');
             html.setAttribute("data-area", (p.area || 'general').toLowerCase());
+            // Asignar el color del área como variable CSS
+
+            const colorArea = AREA_COLORS[p.area] || '#FB923C';
+            html.style.setProperty('--area-color', colorArea);
             
             // Añadir clase de área
             const areaClass = 'area-' + (p.area || 'general').toLowerCase().replace(/\s+/g, '');
@@ -338,6 +342,17 @@ async function cargarPublicaciones() {
    Activar selección con colores
    ========================= */
 
+function activarSeleccion() {
+    const cards = document.querySelectorAll(".publicacion");
+    cards.forEach(card => {
+        card.onclick = function (e) {
+            if (e.target && e.target.tagName === 'BUTTON') return;
+            if (seleccionada) seleccionada.classList.remove("seleccionada");
+            seleccionada = this;
+            this.classList.add("seleccionada");
+        };
+    });
+}
 
 /* =========================
    Botones de voto

@@ -715,8 +715,8 @@ header {
 
 .publicacion.seleccionada {
     border-color: var(--area-color, #FB923C);
-    background: rgba(251, 146, 60, 0.05);
-    box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.1);
+    background: color-mix(in srgb, var(--area-color) 5%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--area-color) 10%, transparent);
 }
 
 .media {
