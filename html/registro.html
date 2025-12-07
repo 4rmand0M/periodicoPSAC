@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#4ADE80">
+    <title>Registro - Periódico PSAC</title>
+    <link rel="stylesheet" href="../css/style_login.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+   <link rel="stylesheet" href="../css/style_registro.css">
+</head>
+<body>
+    <div class="window-container">
+        <div class="window">
+            <form class="form" id="registerForm">
+                <h1 class="title">📝 Crear Cuenta</h1>
+
+                <!-- Sección: Información Personal -->
+                <div class="form-section">
+                    <div class="section-title">Información Personal</div>
+
+                    <div class="flex-column">
+                        <label>Nombre Completo</label>
+                    </div>
+                    <div class="inputForm">
+                        <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 16c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8zm0-14c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6 2.69-6 6-6z"/>
+                            <path d="M16 18c-7.73 0-14 3.13-14 7v3h28v-3c0-3.87-6.27-7-14-7zm0 2c6.63 0 12 2.91 12 5.5V27H4v-1.5c0-2.59 5.37-5.5 12-5.5z"/>
+                        </svg>
+                        <input type="text" class="input" id="nombre" name="nombre" placeholder="Juan Pérez" required minlength="3">
+                    </div>
+                    <span class="input-hint">Mínimo 3 caracteres</span>
+                    <span class="input-error" id="nombreError">Por favor ingresa un nombre válido</span>
+                </div>
+
+                <!-- Sección: Credenciales -->
+                <div class="form-section">
+                    <div class="section-title">Credenciales de Acceso</div>
+
+                    <div class="flex-column">
+                        <label>Usuario</label>
+                    </div>
+                    <div class="inputForm">
+                        <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 4c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6 2.69-6 6-6m0-2c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 12c-3.87 0-7 1.79-7 4v3h14v-3c0-2.21-3.13-4-7-4z"/>
+                        </svg>
+                        <input type="text" class="input" id="username" name="username" placeholder="usuario123" required minlength="3" pattern="[a-zA-Z0-9_]+" title="Solo letras, números y guion bajo">
+                    </div>
+                    <span class="input-hint">3-20 caracteres, sin espacios</span>
+                    <span class="input-error" id="usernameError">Usuario inválido o ya existe</span>
+                </div>
+
+                <div class="flex-column">
+                    <label>Contraseña</label>
+                </div>
+                <div class="inputForm">
+                    <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"/>
+                        <path d="M304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"/>
+                    </svg>
+                    <input type="password" class="input" id="password" name="password" placeholder="Mínimo 8 caracteres" required minlength="8">
+                </div>
+                <span class="input-hint">Mínimo 8 caracteres con mayúsculas, minúsculas y números</span>
+                <div class="password-strength-meter">
+                    <div class="password-strength-bar" id="passwordBar"></div>
+                </div>
+                <div class="password-strength-text" id="passwordStrength"></div>
+                <span class="input-error" id="passwordError">La contraseña debe tener al menos 8 caracteres</span>
+
+                <div class="flex-column" style="margin-top: 15px;">
+                    <label>Confirmar Contraseña</label>
+                </div>
+                <div class="inputForm">
+                    <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"/>
+                        <path d="M304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"/>
+                    </svg>
+                    <input type="password" class="input" id="confirmPassword" name="confirmPassword" placeholder="Repite tu contraseña" required minlength="8">
+                </div>
+                <span class="input-error" id="confirmPasswordError">Las contraseñas no coinciden</span>
+
+                <!-- Sección: Correo -->
+                <div class="form-section">
+                    <div class="section-title">Contacto (Opcional)</div>
+
+                    <div class="flex-column">
+                        <label>Email</label>
+                    </div>
+                    <div class="inputForm">
+                        <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M28 6H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 2v.5l-12 7.5-12-7.5V8h24zm0 16H4V10l12 7.5L28 10v14z"/>
+                        </svg>
+                        <input type="email" class="input" id="email" name="email" placeholder="tu@email.com">
+                    </div>
+                    <span class="input-hint">No será compartido con terceros</span>
+                </div>
+
+                <!-- Información del rol -->
+                <div class="role-info">
+                    <strong>👤 Rol: Usuario Registrado</strong>
+                    ✓ Ver todas las publicaciones y noticias<br>
+                    ✓ Escribir y responder comentarios<br>
+                    ✓ Votar en publicaciones<br>
+                    ✓ Recibir notificaciones
+                </div>
+
+                <!-- Términos y condiciones -->
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms" style="margin: 0; cursor: pointer;">
+                        <span class="terms-text">
+                            Acepto los <a href="#" onclick="event.preventDefault(); mostrarTerminos()">términos y condiciones</a> y la <a href="#" onclick="event.preventDefault(); mostrarPrivacidad()">política de privacidad</a>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="button-submit" id="btnRegistro">Crear Cuenta</button>
+
+                <div class="login-link">
+                    <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/notification_system.js"></script>
+    <script src="../js/script_registro.js"></script>
+</body>
+</html>

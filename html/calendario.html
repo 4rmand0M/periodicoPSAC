@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario - PSAC</title>
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/style_calendario.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+    <script src="../js/notification_system.js"></script>
+</head>
+<body>
+    <!-- Botón hamburguesa -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="">
+                <span>Inicio</span>
+            </a>
+            <a href="calendario.html" class="nav-item" style="background: #f3f4f6;">
+                <img class="nav-icon" src="../svg/calendar.png" alt="">
+                <span>Calendario</span>
+            </a>
+            <a href="contactanos.html" class="nav-item">
+                <img class="nav-icon" src="../svg/paper-plane.png" alt="">
+                <span>Contáctanos</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>Noticias</span>
+            </a>
+            <a href="galeria.html" class="nav-item">
+                <img class="nav-icon" src="../svg/star.png" alt="">
+                <span>Galería</span>
+            </a>
+            <a href="editores.html" class="nav-item">
+                <img class="nav-icon" src="../svg/admin-alt.png" alt="">
+                <span>Editores</span>
+            </a>
+            <a href="nosotros.html" class="nav-item">
+                <img class="nav-icon" src="../svg/search.png" alt="">
+                <span>Sobre nosotros</span>
+            </a>
+            
+
+            </div>
+            
+            <div class="section-divider" id="section-admtools">
+                <div class="section-header" onclick="toggleSection('admtools')">
+                    <span>ADM. tools</span>
+                    <span class="arrow" id="arrow-admtools">▼</span>
+                </div>
+                <div class="section-content collapsed" id="admtools">
+                    <button class="btn btn-green-light" onclick="window.location='usuarios.html'">Nuevo editor</button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar"></div>
+        </div>
+
+        <button class="ingresar-btn" onclick="window.location.href='login.html'">Ingresar</button>
+    </aside>
+    
+    <div class="divider-line" id="dividerLine"></div>
+    
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">Calendario Escolar</h1>
+            </div>
+        </header>
+
+        <div class="body-content">
+            <div class="calendario-container">
+                <!-- Hero Section -->
+                <div class="calendario-hero">
+                    <h1>📅 Calendario de Eventos</h1>
+                    <p>Mantente al día con todos los eventos y actividades del politécnico</p>
+                </div>
+
+                <!-- Layout Principal -->
+                <div class="calendario-layout">
+                    <!-- Calendario (Izquierda) -->
+                    <div class="calendario-main">
+                        <div class="calendario-header">
+                            <button class="btn-nav" id="btnPrevMonth">‹</button>
+                            <h2 id="currentMonth">Enero 2025</h2>
+                            <button class="btn-nav" id="btnNextMonth">›</button>
+                            <button class="btn-today" id="btnToday">Hoy</button>
+                            <button class="btn-nuevo-evento" id="btnNuevoEvento">+ Nuevo Evento</button>
+                        </div>
+                        
+                        <div class="calendario-grid" id="calendarioGrid">
+                            <!-- Se genera dinámicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Sidebar de Eventos (Derecha) -->
+                    <div class="eventos-sidebar">
+                        <div class="eventos-header">
+                            <h3>📋 Próximos Eventos</h3>
+                            <button class="btn-toggle-eventos" id="btnToggleEventos">▼</button>
+                        </div>
+                        <div class="eventos-lista" id="eventosLista">
+                            <div class="eventos-loading">
+                                <div class="spinner"></div>
+                                <p>Cargando eventos...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Evento -->
+    <div class="modal-evento" id="modalEvento">
+        <div class="modal-evento-overlay" onclick="cerrarModalEvento()"></div>
+        <div class="modal-evento-content">
+            <div class="modal-evento-header">
+                <h3 id="modalEventoTitulo">Nuevo Evento</h3>
+                <button class="modal-close" onclick="cerrarModalEvento()">✕</button>
+            </div>
+            <div class="modal-evento-body">
+                <form id="formEvento">
+                    <input type="hidden" id="eventoId">
+                    
+                    <div class="form-group">
+                        <label for="eventoNombre">Nombre del Evento *</label>
+                        <input type="text" id="eventoNombre" required placeholder="Ej: Reunión de padres">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventoDescripcion">Descripción</label>
+                        <textarea id="eventoDescripcion" rows="3" placeholder="Detalles del evento..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventoFecha">Fecha *</label>
+                            <input type="date" id="eventoFecha" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventoHora">Hora</label>
+                            <input type="time" id="eventoHora">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventoColor">Color del Evento *</label>
+                        <div class="color-picker" id="colorPicker">
+                            <div class="color-option" data-color="#EF4444" style="background: #EF4444"></div>
+                            <div class="color-option" data-color="#F97316" style="background: #F97316"></div>
+                            <div class="color-option" data-color="#F59E0B" style="background: #F59E0B"></div>
+                            <div class="color-option" data-color="#84CC16" style="background: #84CC16"></div>
+                            <div class="color-option" data-color="#22C55E" style="background: #22C55E"></div>
+                            <div class="color-option" data-color="#14B8A6" style="background: #14B8A6"></div>
+                            <div class="color-option" data-color="#3B82F6" style="background: #3B82F6"></div>
+                            <div class="color-option" data-color="#8B5CF6" style="background: #8B5CF6"></div>
+                            <div class="color-option" data-color="#EC4899" style="background: #EC4899"></div>
+                        </div>
+                        <input type="hidden" id="eventoColor" value="#3B82F6">
+                    </div>
+
+                    <div class="modal-evento-actions">
+                        <button type="button" class="btn-cancelar" onclick="cerrarModalEvento()">Cancelar</button>
+                        <button type="submit" class="btn-guardar">Guardar Evento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalle de Evento -->
+    <div class="modal-detalle-evento" id="modalDetalleEvento">
+        <div class="modal-evento-overlay" onclick="cerrarModalDetalle()"></div>
+        <div class="modal-evento-content">
+            <div class="modal-evento-header">
+                <h3 id="detalleEventoTitulo"></h3>
+                <button class="modal-close" onclick="cerrarModalDetalle()">✕</button>
+            </div>
+            <div class="modal-evento-body">
+                <div class="evento-detalle-info">
+                    <div class="info-item">
+                        <span class="info-icon">📅</span>
+                        <div>
+                            <strong>Fecha</strong>
+                            <p id="detalleFecha"></p>
+                        </div>
+                    </div>
+                    <div class="info-item" id="detalleHoraContainer" style="display: none;">
+                        <span class="info-icon">🕒</span>
+                        <div>
+                            <strong>Hora</strong>
+                            <p id="detalleHora"></p>
+                        </div>
+                    </div>
+                    <div class="info-item" id="detalleDescripcionContainer" style="display: none;">
+                        <span class="info-icon">📝</span>
+                        <div>
+                            <strong>Descripción</strong>
+                            <p id="detalleDescripcion"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-evento-actions">
+                    <button class="btn-editar" onclick="editarEventoDesdeDetalle()">✏️ Editar</button>
+                    <button class="btn-eliminar" onclick="eliminarEventoDesdeDetalle()">🗑️ Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/scrypt_calendario.js"></script>
+    <script src="../js/sidebar_common.js"></script>
+    <script src="../js/sidebar_toggle.js"></script>
+</body>
+</html>

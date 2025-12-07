@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Noticias - PSAC</title>
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/style_editar_noticias.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+    <script src="../js/notification_system.js"></script>
+</head>
+<body>
+    <!-- Sidebar (igual que otras páginas) -->
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="">
+                <span>Inicio</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>Noticias</span>
+            </a>
+            <a href="editar_noticias.html" class="nav-item" style="background: #f3f4f6;">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>Gestionar Noticias</span>
+            </a>
+        </nav>
+        
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar"></div>
+        </div>
+    </aside>
+    
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">Gestionar Noticias</h1>
+            </div>
+            <div class="search-box">
+                <img class="search-icon" src="../svg/search.png" alt="">
+                <input type="text" id="searchNoticias" placeholder="Buscar noticias...">
+            </div>
+        </header>
+
+        <div class="body-content">
+            <div class="noticias-manager-container">
+                <div class="manager-header">
+                    <h2>📰 Administrar Noticias</h2>
+                    <button class="btn-nueva-noticia" onclick="window.location.href='crear_noticia.html'">
+                        + Nueva Noticia
+                    </button>
+                </div>
+
+                <div class="noticias-grid" id="noticiasGrid">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Cargando noticias...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div class="modal-editar" id="modalEditar">
+        <div class="modal-overlay" onclick="cerrarModalEditar()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Editar Noticia</h3>
+                <button class="modal-close" onclick="cerrarModalEditar()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditar" enctype="multipart/form-data">
+                    <input type="hidden" id="editNoticiaId">
+                    
+                    <div class="form-group">
+                        <label for="editTitulo">Título</label>
+                        <input type="text" id="editTitulo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editDescripcion">Descripción Corta</label>
+                        <textarea id="editDescripcion" rows="2" maxlength="200"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editCategoria">Categoría</label>
+                        <select id="editCategoria">
+                            <option value="general">General</option>
+                            <option value="informatica">Informática</option>
+                            <option value="deportes">Deportes</option>
+                            <option value="cultura">Cultura</option>
+                            <option value="mercadeo">Mercadeo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editContenido">Contenido</label>
+                        <textarea id="editContenido" rows="6" required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancelar" onclick="cerrarModalEditar()">Cancelar</button>
+                        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/scrypt_editar_noticias.js"></script>
+    <script src="../js/sidebar_common.js"></script>
+</body>
+</html>

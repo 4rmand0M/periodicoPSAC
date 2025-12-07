@@ -1,0 +1,810 @@
+/* ==========================================
+   SISTEMA DE COMENTARIOS - ESTILOS COMPLETOS
+   ========================================== */
+
+/* Sección principal */
+.comentarios-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #e5e7eb;
+}
+
+.comentarios-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.comentarios-titulo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comentarios-titulo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.comentarios-count {
+    background: #f3f4f6;
+    color: #6b7280;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.comentarios-controles {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.select-orden {
+    padding: 6px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background: white;
+    transition: all 0.2s;
+}
+
+.select-orden:hover {
+    border-color: #3b82f6;
+}
+
+.toggle-comentarios {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toggle-comentarios:hover {
+    background: #2563eb;
+}
+
+/* Container */
+.comentarios-container {
+    display: none;
+    animation: slideDown 0.3s ease-out;
+}
+
+.comentarios-container.visible {
+    display: block;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Formulario */
+.comentario-form {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.comentario-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.comentario-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.autocomplete-menciones {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    width: calc(100% - 30px);
+    margin-top: -10px;
+}
+
+.autocomplete-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.autocomplete-item:hover {
+    background: #f3f4f6;
+}
+
+.mencion-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    flex-shrink: 0;
+}
+
+.mencion-info {
+    flex: 1;
+}
+
+.mencion-info strong {
+    display: block;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.mencion-info small {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.comentario-form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.comentario-char-count {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.comentario-char-count.warning {
+    color: #f59e0b;
+}
+
+.comentario-char-count.error {
+    color: #ef4444;
+}
+
+.btn-comentar {
+    padding: 8px 20px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-comentar:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.btn-comentar:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Lista de comentarios */
+.comentarios-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comentarios-loading {
+    text-align: center;
+    padding: 30px;
+    color: #9ca3af;
+}
+
+.comentarios-loading .spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f4f6;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.comentarios-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #9ca3af;
+}
+
+.comentarios-empty .icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+/* Item de comentario */
+.comentario-item {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px;
+    transition: all 0.2s;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.comentario-item:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.comentario-item.propio {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.comentario-item.respuesta {
+    margin-left: 40px;
+    margin-top: 10px;
+    border-left: 3px solid #3b82f6;
+}
+
+.comentario-item.removing {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+.com-main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.com-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.com-autor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.com-autor .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    flex-shrink: 0;
+}
+
+.com-autor .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.com-autor .nombre {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.com-autor .fecha {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.com-autor .editado {
+    font-size: 11px;
+    color: #6b7280;
+    margin-left: 6px;
+}
+
+.acciones {
+    display: flex;
+    gap: 6px;
+}
+
+.acciones button {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.acciones button:hover {
+    background: #f3f4f6;
+    color: #1f2937;
+}
+
+.com-texto {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #374151;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.com-texto .mencion {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+/* Reacciones */
+.com-reacciones {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-reaccion {
+    background: #f3f4f6;
+    border: 2px solid transparent;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-reaccion:hover {
+    background: #e5e7eb;
+    transform: scale(1.05);
+}
+
+.btn-reaccion.activa {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    color: #1e40af;
+    font-weight: 600;
+}
+
+.btn-responder {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-responder:hover {
+    background: #f3f4f6;
+    color: #1f2937;
+}
+
+/* Formulario de respuesta */
+.respuesta-form {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.respuesta-form textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.respuesta-form textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.resp-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.resp-actions button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.resp-actions button:first-child {
+    background: #3b82f6;
+    color: white;
+}
+
+.resp-actions button:first-child:hover {
+    background: #2563eb;
+}
+
+.resp-actions button:last-child {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.resp-actions button:last-child:hover {
+    background: #e5e7eb;
+}
+
+/* Contenedor de respuestas */
+.respuestas {
+    margin-top: 12px;
+    padding-left: 10px;
+    border-left: 3px solid #e5e7eb;
+}
+
+/* Edición de comentario */
+.textarea-edit {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 2px solid #3b82f6;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.edit-actions button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.edit-actions .btn-edit {
+    background: #3b82f6;
+    color: white;
+}
+
+.edit-actions .btn-edit:hover {
+    background: #2563eb;
+}
+
+.edit-actions .btn-cancel {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.edit-actions .btn-cancel:hover {
+    background: #e5e7eb;
+}
+
+/* Cargar más */
+.cargar-mas {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cargar-mas button {
+    padding: 10px 24px;
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cargar-mas button:hover {
+    background: #e5e7eb;
+    border-color: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .comentarios-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .comentarios-controles {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .select-orden {
+        flex: 1;
+    }
+    
+    .comentario-form {
+        padding: 12px;
+    }
+    
+    .comentario-textarea {
+        min-height: 60px;
+        font-size: 13px;
+    }
+    
+    .comentario-item {
+        padding: 12px;
+    }
+    
+    .comentario-item.respuesta {
+        margin-left: 20px;
+    }
+    
+    .com-autor {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .autocomplete-menciones {
+        width: calc(100% - 24px);
+    }
+}
+
+/* Arreglos para cards de publicaciones */
+.card {
+    display: flex;
+    flex-direction: column;
+}
+
+.card p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.card .media {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 500px;
+}
+
+/* ==========================================
+   MODAL DE COMENTARIOS
+   ========================================== */
+.modal-comentarios {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-comentarios.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-comentarios-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.modal-comentarios-content {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    z-index: 10001;
+}
+
+.modal-comentarios.active .modal-comentarios-content {
+    transform: scale(1);
+}
+
+.modal-comentarios-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 2px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 16px 16px 0 0;
+}
+
+.modal-comentarios-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-comentarios-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-comentarios-close:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.modal-comentarios-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-comentarios-body .comentarios-section {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.modal-comentarios-body .comentarios-container {
+    display: block !important;
+}
+
+.modal-comentarios-body .comentarios-header {
+    margin-bottom: 20px;
+}
+
+/* Botón de comentarios en las tarjetas */
+.btn-comentarios-modal {
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.btn-comentarios-modal:hover {
+    background: #f3f4f6;
+}
+
+.btn-comentarios-modal .icon-comentarios {
+    display: block;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Responsive para modal */
+@media (max-width: 640px) {
+    .modal-comentarios-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .modal-comentarios-header {
+        padding: 16px;
+    }
+    
+    .modal-comentarios-body {
+        padding: 16px;
+    }
+    
+    .modal-comentarios-header h3 {
+        font-size: 18px;
+    }
+}

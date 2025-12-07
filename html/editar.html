@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#4ADE80">
+    <title>Editar Publicación - PSAC</title>
+    <link rel="stylesheet" href="../css/style_editar.css">
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+      <link rel="stylesheet" href="../css/sidebar_common.css">
+    <script src="../js/notification_system.js"></script>
+  
+</head>
+  <script src="../js/scrypt_editar.js" defer></script>
+<body>
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="" aria-hidden="true">
+                <span>Inicio</span>
+            </a>
+            <a href="calendario.html" class="nav-item">
+                <img class="nav-icon" src="../svg/calendar.png" alt="" aria-hidden="true">
+                <span>Calendario</span>
+            </a>
+            <a href="contactanos.html" class="nav-item">
+                <img class="nav-icon" src="../svg/paper-plane.png" alt="" aria-hidden="true">
+                <span>Contáctanos</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="" aria-hidden="true">
+                <span>Noticias</span>
+            </a>
+            <a href="galeria.html" class="nav-item">
+                <img class="nav-icon" src="../svg/star.png" alt="" aria-hidden="true">
+                <span>Galería</span>
+            </a>
+            <a href="editores.html" class="nav-item">
+                <img class="nav-icon" src="../svg/admin-alt.png" alt="" aria-hidden="true">
+                <span>Editores</span>
+            </a>
+            <a href="nosotros.html" class="nav-item">
+                <img class="nav-icon" src="../svg/search.png" alt="" aria-hidden="true">
+                <span>Sobre nosotros</span>
+            </a>
+            
+            <div class="section-divider">
+                <div class="section-header" onclick="toggleSection('publicar')">
+                    <span>Publicar</span>
+                    <span class="arrow" id="arrow-publicar">▼</span>
+                </div>
+                <div class="section-content" id="publicar">
+                    <button class="btn btn-yellow" onclick="window.location.href='subir.html'">subir</button>
+                    <button class="btn btn-orange" onclick="window.location.href='index.html'">eliminar</button>
+                    <button class="btn btn-red" onclick="window.location.href='editar.html'">editar</button>
+                </div>
+            </div>
+        </nav>
+           <!-- CONTENEDOR DE USUARIO-->
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+
+    </aside>
+    
+    <div class="divider-line" id="dividerLine"></div>
+    
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">periódico PSAC</h1>
+            </div>
+            <div class="search-box">
+                <img class="search-icon" src="../svg/search.png" alt="" aria-hidden="true">
+                <input type="text" placeholder="buscar">
+            </div>
+        </header>
+
+        <div class="body-content">
+            <div class="form-container">
+                <h1>✏️ Editar Publicación</h1>
+                
+                <div class="alert alert-info">
+                    📌 Selecciona una publicación de la lista para editarla
+                </div>
+
+                <div class="publicaciones-list" id="publicacionesList">
+                    <p style="text-align:center; color:#666;">Cargando publicaciones...</p>
+                </div>
+
+                <form id="formEditar" enctype="multipart/form-data" style="display:none;">
+                    <input type="hidden" name="id" id="edit_id">
+
+                    <div class="form-group">
+                        <label for="edit_area">Área:</label>
+                        <select name="area" id="edit_area" required>
+                            <option value="informatica">Informática</option>
+                            <option value="mercadeo">Mercadeo</option>
+                            <option value="contabilidad">Contabilidad</option>
+                            <option value="logistica">Logística</option>
+                            <option value="turismo">Turismo</option>
+                            <option value="acondicionamiento">Acondicionamiento Físico</option>
+                            <option value="sociales">Sociales</option>
+                            <option value="matematica">Matemática</option>
+                            <option value="lengua">Lengua Española</option>
+                            <option value="naturales">Naturales</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_contenido">Contenido:</label>
+                        <textarea name="contenido" id="edit_contenido" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_archivo">Cambiar archivo (opcional):</label>
+                        <div class="current-file" id="currentFile" style="display:none;"></div>
+                        <input type="file" name="archivo" id="edit_archivo" accept="image/*,video/*">
+                        <div class="file-info">Deja vacío si no deseas cambiar el archivo actual</div>
+                        <div class="preview-container" id="previewContainer"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="destacado" value="1" id="edit_destacado">
+                            <label for="edit_destacado" style="margin: 0;">⭐ Marcar como destacada</label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">💾 Guardar Cambios</button>
+                        <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">✗ Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../js/sidebar_toggle.js"></script>
+<script src="../js/sidebar_common.js"></script>
+</body>
+</html>

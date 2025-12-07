@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias - Periódico PSAC</title>
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/style_noticias.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+    <script src="../js/notification_system.js"></script>
+</head>
+<body>
+    <!-- Botón hamburguesa -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="">
+                <span>Inicio</span>
+            </a>
+            <a href="calendario.html" class="nav-item">
+                <img class="nav-icon" src="../svg/calendar.png" alt="">
+                <span>Calendario</span>
+            </a>
+            <a href="contactanos.html" class="nav-item">
+                <img class="nav-icon" src="../svg/paper-plane.png" alt="">
+                <span>Contáctanos</span>
+            </a>
+            <a href="noticias.html" class="nav-item" style="background: #f3f4f6;">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>Noticias</span>
+            </a>
+            <a href="galeria.html" class="nav-item">
+                <img class="nav-icon" src="../svg/star.png" alt="">
+                <span>Galería</span>
+            </a>
+            <a href="editores.html" class="nav-item">
+                <img class="nav-icon" src="../svg/admin-alt.png" alt="">
+                <span>Editores</span>
+            </a>
+            <a href="nosotros.html" class="nav-item">
+                <img class="nav-icon" src="../svg/search.png" alt="">
+                <span>Sobre nosotros</span>
+            </a>
+            
+            <div class="section-divider" id="section-publicar">
+                <div class="section-header" onclick="toggleSection('publicar')">
+                    <span>Publicar</span>
+                    <span class="arrow" id="arrow-publicar">▼</span>
+                </div>
+                <div class="section-content collapsed" id="publicar">
+                    <button class="btn btn-orange" onclick="window.location.href='editar_noticias.html'">Administar Noticias</button>
+                    
+                </div>
+            </div>
+            
+            <div class="section-divider" id="section-admtools">
+                <div class="section-header" onclick="toggleSection('admtools')">
+                    <span>ADM. tools</span>
+                    <span class="arrow" id="arrow-admtools">▼</span>
+                </div>
+                <div class="section-content collapsed" id="admtools">
+                    <button class="btn btn-green-light" onclick="window.location='usuarios.html'">Nuevo editor</button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar"></div>
+        </div>
+
+        <button class="ingresar-btn" onclick="window.location.href='login.html'">Ingresar</button>
+    </aside>
+    
+    <div class="divider-line" id="dividerLine"></div>
+    
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">Noticias PSAC</h1>
+            </div>
+            <div class="search-box">
+                <img class="search-icon" src="../svg/search.png" alt="">
+                <input type="text" id="searchNoticias" placeholder="Buscar noticias...">
+            </div>
+        </header>
+
+        <div class="body-content">
+            <div class="noticias-container">
+                <!-- Hero Section -->
+                <div class="noticias-hero">
+                    <h1>📰 Últimas Noticias</h1>
+                    <p>Mantente informado con las últimas novedades, eventos y acontecimientos del Politécnico Salesiano Arquides Calderón</p>
+                </div>
+
+                <!-- TICKER DE NOTICIAS -->
+                <div class="ticker-container">
+                    <div class="ticker-label">🔴 ÚLTIMAS NOTICIAS</div>
+                    <div class="ticker-content">
+                        <div class="ticker-items" id="tickerItems">
+                            <!-- Se llena dinámicamente con JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="noticias-filtros" id="noticiasFilterContainer">
+                    <button class="filtro-noticia active" onclick="filtrarNoticias('todas')">
+                        Todas
+                    </button>
+                    <button class="filtro-noticia" onclick="filtrarNoticias('informatica')">
+                        Informática
+                    </button>
+                    <button class="filtro-noticia" onclick="filtrarNoticias('deportes')">
+                        Deportes
+                    </button>
+                    <button class="filtro-noticia" onclick="filtrarNoticias('cultura')">
+                        Cultura
+                    </button>
+                    <button class="filtro-noticia" onclick="filtrarNoticias('general')">
+                        General
+                    </button>
+                </div>
+
+                <!-- Layout de Noticias Principal (1 grande + 4 pequeñas) -->
+                <div class="noticias-layout" id="noticiasLayout">
+                    <div class="loading-noticias">
+                        <div class="spinner-noticias"></div>
+                        <p>Cargando noticias...</p>
+                    </div>
+                </div>
+
+                <!-- Grid de Noticias Adicionales (Después de las primeras 5) -->
+                <div class="noticias-grid-adicional" id="noticiasGridAdicional">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Noticia Completa -->
+    <div class="modal-noticia" id="modalNoticia">
+        <div class="modal-noticia-contenido">
+            <div class="modal-noticia-header">
+                <img id="modalNoticiaImagen" class="modal-noticia-media" src="" alt="">
+                <button class="modal-close" onclick="cerrarModalNoticia()">✕</button>
+            </div>
+            <div class="modal-noticia-body">
+                <span id="modalNoticiaBadge" class="noticia-badge"></span>
+                <h1 id="modalNoticiaTitulo" class="modal-noticia-titulo"></h1>
+                <div class="modal-noticia-meta">
+                    <span>📅 <span id="modalNoticiaFecha"></span></span>
+                    <span>✍️ <span id="modalNoticiaAutor"></span></span>
+                </div>
+                <div id="modalNoticiaTexto" class="modal-noticia-texto"></div>
+                <div id="modalNoticiaGaleria" class="modal-noticia-galeria"></div>
+            </div>
+            <div class="modal-noticia-acciones">
+                <button class="btn-accion" onclick="imprimirNoticia()">
+                    🖨️ Imprimir
+                </button>
+                <button class="btn-accion" onclick="descargarInforme()">
+                    📄 Descargar Informe PDF
+                </button>
+                <button class="btn-accion" onclick="compartirNoticia()">
+                    🔗 Compartir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/scrypt_noticias.js"></script>
+    <script src="../js/sidebar_common.js"></script>
+    <script src="../js/sidebar_toggle.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+.nav-item:hover {
+    background: #f3f4f6;
+}
+
+.nav-item svg,
+.nav-item .nav-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item .nav-icon {
+    object-fit: contain;
+    display: inline-block;
+}
+
+.section-divider {
+    border-top: 2px solid black;
+    margin-top: 20px;
+    padding-top: 15px;
+}
+
+/* Ocultar secciones de editor por defecto (se muestran con JS si hay permisos) */
+#section-publicar,
+#section-admtools {
+    display: none;
+}
+
+section {
+    width: 90%;
+    overflow-y: auto; 
+    overflow-x: hidden;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 40px 50px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border: 1px solid #e5e5e5;
+}
+
+/* Titulares estilo revista */
+h1, h2 {
+    color: #222;
+    margin-bottom: 15px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+/* Texto fluido y elegante */
+p {
+    color: #444;
+    line-height: 1.75;
+    margin-bottom: 20px;
+}
+
+ul {
+    padding-left: 25px;
+}
+
+li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* ==========================================
+   ESTILOS DE SIDEBAR Y USUARIO
+   ========================================== */
+
+#userInfo {
+    padding: 20px;
+    border-top: 2px solid #e5e7eb;
+    margin-top: auto;
+    background: #f9fafb;
+}
+
+#userAvatar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+#userAvatar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+#userAvatar .avatar-circle,
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#userAvatar .avatar-info {
+    flex: 1;
+    min-width: 0;
+}
+
+#userAvatar .avatar-info strong {
+    display: block;
+    font-size: 15px;
+    color: #1f2937;
+    font-weight: 700;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#userAvatar .avatar-info small {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+    display: block;
+}
+
+.ingresar-btn.logout {
+    background: #EF4444 !important;
+}
+
+.ingresar-btn.logout:hover {
+    background: #DC2626 !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}

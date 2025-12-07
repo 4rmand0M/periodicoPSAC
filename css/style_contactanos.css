@@ -1,0 +1,201 @@
+.contact-container {
+    background: white;
+    padding: 25px;
+    width: 380px;
+    margin: 40px auto 0 auto; 
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+    font-weight: bold;
+}
+
+input, textarea {
+    resize: none;         
+    overflow-y: auto;     
+    max-width: 100%;    
+    box-sizing: border-box; 
+}
+
+
+.button-send {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-send:hover {
+    background: #0056b3;
+}
+
+
+#status {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    display: none;
+}
+
+.status-loading {
+    background: #fff3cd;
+    color: #856404;
+    display: block;
+}
+
+.status-success {
+    background: #d4edda;
+    color: #155724;
+    display: block;
+}
+
+.status-error {
+    background: #f8d7da;
+    color: #721c24;
+    display: block;
+}
+
+
+button.loading {
+    background: #777 !important;
+    cursor: not-allowed;
+}
+
+.social-section {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.social-section h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.social-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+.social-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 26px;
+    color: white;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.85;
+}
+
+
+.instagram {
+    background: #E1306C;
+}
+
+.facebook {
+    background: #1877F2;
+}
+
+.youtube {
+    background: #FF0000;
+}
+
+/* ==========================================
+   ESTILOS DE SIDEBAR Y USUARIO
+   ========================================== */
+
+#userInfo {
+    padding: 20px;
+    border-top: 2px solid #e5e7eb;
+    margin-top: auto;
+    background: #f9fafb;
+}
+
+#userAvatar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+#userAvatar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+#userAvatar .avatar-circle,
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#userAvatar .avatar-info {
+    flex: 1;
+    min-width: 0;
+}
+
+#userAvatar .avatar-info strong {
+    display: block;
+    font-size: 15px;
+    color: #1f2937;
+    font-weight: 700;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#userAvatar .avatar-info small {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+    display: block;
+}
+
+.ingresar-btn.logout {
+    background: #EF4444 !important;
+}
+
+.ingresar-btn.logout:hover {
+    background: #DC2626 !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#4ADE80">
+    <title>Contactanos</title>
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/style_contactanos.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+      <link rel="stylesheet" href="../css/sidebar_common.css">
+    <script src="../js/notification_system.js"></script>
+
+</head>
+<body>
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="" aria-hidden="true">
+                <span>Inicio</span>
+            </a>
+            <a href="calendario.html" class="nav-item">
+                <img class="nav-icon" src="../svg/calendar.png" alt="" aria-hidden="true">
+                <span>Calendario</span>
+            </a>
+            <a href="contactanos.html" class="nav-item">
+                <img class="nav-icon" src="../svg/paper-plane.png" alt="" aria-hidden="true">
+                <span>Contáctanos</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="" aria-hidden="true">
+                <span>Noticias</span>
+            </a>
+            <a href="galeria.html" class="nav-item">
+                <img class="nav-icon" src="../svg/star.png" alt="" aria-hidden="true">
+                <span>Galería</span>
+            </a>
+            <a href="editores.html" class="nav-item">
+                <img class="nav-icon" src="../svg/admin-alt.png" alt="" aria-hidden="true">
+                <span>Editores</span>
+            </a>
+            <a href="nosotros.html" class="nav-item">
+                <img class="nav-icon" src="../svg/search.png" alt="" aria-hidden="true">
+                <span>Sobre nosotros</span>
+            </a>
+                  
+        </nav>
+
+        <!-- CONTENEDOR DE USUARIO-->
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+
+    </aside>
+  
+  <div class="main-container">
+      <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">Contáctanos</h1>
+            </div>
+        </header>
+
+
+        <section class="contact-container">
+
+        <form id="contactForm">
+            <label>Nombre</label>
+            <input type="text" id="name" required>
+
+            <label>Correo</label>
+            <input type="email" id="email" required>
+
+            <label>Mensaje</label>
+            <textarea id="message" required></textarea>
+
+            <button class="button-send" type="submit/">Enviar</button>
+        </form>
+
+        <div id="status"></div>
+
+        <hr>
+
+       <div class="social-section">
+    <h3>Síguenos en nuestras redes sociales</h3>
+
+    <div class="social-container">
+
+        <!-- Instagram -->
+        <a class="social-btn instagram" href="https://instagram.com/TU_USUARIO" target="_blank">
+            <i class="fab fa-instagram"></i>
+        </a>
+
+        <!-- Facebook -->
+        <a class="social-btn facebook" href="https://facebook.com/arquidescalderon" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+
+        <!-- YouTube -->
+        <a class="social-btn youtube" href="https://youtube.com/@politecnicosalesianoarquid659" target="_blank">
+            <i class="fab fa-youtube"></i>
+        </a>
+
+    </div>
+</div>
+    </section>
+    <script src="../js/scrypt_contactanos.js"></script>
+        <script src="../js/sidebar_toggle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+    <script src="../js/sidebar_common.js"></script>
+</body>
+</html>

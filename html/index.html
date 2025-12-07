@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#4ADE80">
+    <title>Periódico PSAC</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
+    <link rel="stylesheet" href="../css/grid_index.css">
+    <link rel="stylesheet" href="../css/style_coments.css">
+</head>
+
+<body>
+    <!-- Botón hamburguesa -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="">
+                <span>Inicio</span>
+            </a>
+            <a href="calendario.html" class="nav-item">
+                <img class="nav-icon" src="../svg/calendar.png" alt="">
+                <span>Calendario</span>
+            </a>
+            <a href="contactanos.html" class="nav-item">
+                <img class="nav-icon" src="../svg/paper-plane.png" alt="">
+                <span>Contáctanos</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>Noticias</span>
+            </a>
+            <a href="galeria.html" class="nav-item">
+                <img class="nav-icon" src="../svg/star.png" alt="">
+                <span>Galería</span>
+            </a>
+            <a href="editores.html" class="nav-item">
+                <img class="nav-icon" src="../svg/admin-alt.png" alt="">
+                <span>Editores</span>
+            </a>
+            <a href="nosotros.html" class="nav-item">
+                <img class="nav-icon" src="../svg/search.png" alt="">
+                <span>Sobre nosotros</span>
+            </a>
+            
+            <div class="section-divider" id="section-publicar">
+                <div class="section-header" onclick="toggleSection('publicar')">
+                    <span>Publicar</span>
+                    <span class="arrow" id="arrow-publicar">▼</span>
+                </div>
+                <div class="section-content collapsed" id="publicar">
+                    <button class="btn btn-yellow" onclick="window.location.href='subir.html'">Subir</button>
+                    <button class="btn btn-orange" id="btnEliminar">Eliminar</button>
+                    <button class="btn btn-red" onclick="window.location.href='editar.html'">Editar</button>
+                </div>
+            </div>
+            
+            <div class="section-divider" id="section-admtools">
+                <div class="section-header" onclick="toggleSection('admtools')">
+                    <span>ADM. tools</span>
+                    <span class="arrow" id="arrow-admtools">▼</span>
+                </div>
+                <div class="section-content collapsed" id="admtools">
+                    <button class="btn btn-green-light" onclick="window.location='usuarios.html'">Nuevo editor</button>
+                </div>
+            </div>
+            
+            <div class="section-divider">
+                <div class="section-header">Filtros por área</div>
+                <div class="section-content">
+                    <label class="filter-item" data-color="#FCD34D">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Informática</span>
+                    </label>
+                    <label class="filter-item" data-color="#FB923C">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Mercadeo</span>
+                    </label>
+                    <label class="filter-item" data-color="#EF4444">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Contabilidad</span>
+                    </label>
+                    <label class="filter-item" data-color="#4ADE80">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Logística</span>
+                    </label>
+                    <label class="filter-item" data-color="#22D3EE">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Turismo</span>
+                    </label>
+                    <label class="filter-item" data-color="#000000">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Acondicionamiento</span>
+                    </label>
+                    <label class="filter-item" data-color="#6366F1">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Lengua</span>
+                    </label>
+                    <label class="filter-item" data-color="#A855F7">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Matemáticas</span>
+                    </label>
+                    <label class="filter-item" data-color="#D946EF">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Sociales</span>
+                    </label>
+                    <label class="filter-item" data-color="#22C55E">
+                        <input type="checkbox" onchange="updateFilters()">
+                        <div class="checkbox-custom"><span class="check-mark">✓</span></div>
+                        <span class="filter-label">Naturales</span>
+                    </label>
+                </div>
+            </div>
+        </nav>
+
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar"></div>
+        </div>
+
+        <button class="ingresar-btn" onclick="window.location.href='login.html'">Ingresar</button>
+    </aside>
+    
+    <div class="divider-line" id="dividerLine"></div>
+    
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">Periódico PSAC</h1>
+            </div>
+            <div class="search-box">
+                <img class="search-icon" src="../svg/search.png" alt="">
+                <input type="text" placeholder="Buscar">
+            </div>
+        </header>
+
+        <div class="destacadas-section">
+            <div class="destacadas-header">
+                <img class="star-icon" src="../svg/star.png" alt="">
+                <h2>Destacadas</h2>
+                <div class="destacadas-controls">
+                    <button class="BtnCarrusel" id="prevDest"><img src="../svg/angle-left.png" alt="‹"></button>
+                    <button class="BtnCarrusel" id="nextDest"><img src="../svg/angle-right.png" alt="›"></button>
+                </div>
+            </div>
+            <div class="destacadas-content" id="carouselDestacadas"></div>
+        </div>
+        
+        <div class="body-content" id="publicaciones"></div>
+    </div>
+
+    <!-- SCRIPTS -->
+     <script src="../js/comentarios_auth_guard.js"></script>
+    <script src="../js/notification_system.js"></script>
+    <script src="../js/comentarios.js"></script>
+    <script src="../js/scrypt_index.js"></script>
+    <script src="../js/sidebar_common.js"></script>
+    <script src="../js/sidebar_toggle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

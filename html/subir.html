@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#4ADE80">
+    <title>Subir Publicación - PSAC</title>
+    <link rel="stylesheet" href="../css/style_subir.css">
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
+    <script src="../js/notification_system.js"></script>
+</head>
+
+<body>
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="">
+                <span>inicio</span>
+            </a>
+            <a href="#" class="nav-item">
+                <img class="nav-icon" src="../svg/calendar.png" alt="">
+                <span>calendario</span>
+            </a>
+            <a href="contactanos.html" class="nav-item">
+                <img class="nav-icon" src="../svg/paper-plane.png" alt="">
+                <span>contáctanos</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>noticias</span>
+            </a>
+            <a href="#" class="nav-item">
+                <img class="nav-icon" src="../svg/star.png" alt="">
+                <span>galería</span>
+            </a>
+            <a href="editores.html" class="nav-item">
+                <img class="nav-icon" src="../svg/admin-alt.png" alt="">
+                <span>editores</span>
+            </a>
+            <a href="nosotros.html" class="nav-item">
+                <img class="nav-icon" src="../svg/search.png" alt="">
+                <span>sobre nosotros</span>
+            </a>
+
+            <div class="section-divider">
+                <div class="section-header" onclick="toggleSection('publicar')">
+                    <span>Publicar</span>
+                    <span class="arrow" id="arrow-publicar">▼</span>
+                </div>
+                <div class="section-content" id="publicar">
+                    <button class="btn btn-yellow" onclick="window.location.href='subir.html'">subir</button>
+                    <button class="btn btn-orange" onclick="window.location.href='index.html'">eliminar</button>
+                    <button class="btn btn-red" onclick="window.location.href='editar.html'">editar</button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar"></div>
+        </div>
+    </aside>
+
+    <div class="divider-line" id="dividerLine"></div>
+
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">📝 Subir Publicación</h1>
+            </div>
+        </header>
+
+        <div class="body-content">
+            <div class="form-container">
+                <h1>📝 Subir Nueva Publicación</h1>
+                
+                <div class="alert alert-info">
+                    💡 <strong>Tip:</strong> Sube tu archivo (imagen o video) y el tipo se detectará automáticamente. Si no subes archivo, será una publicación de texto.
+                </div>
+                
+                <form action="../Connection/subir_publicacion.php" method="post" enctype="multipart/form-data" id="formPublicar">
+                    <div class="form-group">
+                        <label for="tipoPublicar">Tipo de Publicación:</label>
+                        <select name="tipo" id="tipoPublicar" required>
+                            <option value="texto">📄 Texto</option>
+                            <option value="imagen">🖼️ Imagen</option>
+                            <option value="video">🎥 Video</option>
+                        </select>
+                        <small style="color: #6b7280; margin-top: 5px; display: block;">
+                            Se actualizará automáticamente al seleccionar un archivo
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="areaPublicar">Área:</label>
+                        <select name="area" id="areaPublicar" required>
+                            <option value="Informática">💻 Informática</option>
+                            <option value="Mercadeo">📊 Mercadeo</option>
+                            <option value="Contabilidad">💰 Contabilidad</option>
+                            <option value="Logística">📦 Logística</option>
+                            <option value="Turismo">✈️ Turismo</option>
+                            <option value="Acondicionamiento">💪 Acondicionamiento Físico</option>
+                            <option value="Sociales">🌍 Sociales</option>
+                            <option value="Matemáticas">🔢 Matemáticas</option>
+                            <option value="Lengua">📝 Lengua Española</option>
+                            <option value="Naturales">🌿 Naturales</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contenidoPublicar">Contenido:</label>
+                        <textarea name="contenido" id="contenidoPublicar"
+                            placeholder="Escribe el contenido de tu publicación aquí..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="archivoPublicar">Archivo (imagen/video - opcional):</label>
+                        <input type="file" name="archivo" id="archivoPublicar" accept="image/*,video/*">
+                        <div class="file-info">
+                            📋 <strong>Detección automática activada:</strong> El tipo se detectará cuando selecciones un archivo<br>
+                            ✅ Formatos: JPG, PNG, GIF, WEBP (imágenes) | MP4, WEBM, OGG (videos)<br>
+                            📏 Tamaño máximo: 10MB
+                        </div>
+                        <div class="preview-container" id="previewContainer"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="destacado" value="1" id="destacadoPublicar">
+                            <label for="destacadoPublicar" style="margin: 0;">⭐ Marcar como destacada</label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">✓ Publicar</button>
+                        <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">✗ Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Usar el nuevo script mejorado -->
+    <script src="../js/scrypt_subir.js"></script>
+    <script src="../js/sidebar_toggle.js"></script>
+    <script src="../js/sidebar_common.js"></script>
+</body>
+</html>

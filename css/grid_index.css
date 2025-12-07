@@ -1,0 +1,44 @@
+
+/* Grid estilo Masonry */
+@media (min-width: 769px) {
+    #publicaciones {
+        column-count: 3;
+        column-gap: 20px;
+        padding: 20px;
+    }
+    
+    #publicaciones .card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+        display: inline-block;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    #publicaciones {
+        column-count: 4;
+    }
+}
+
+/* Móviles y tablets: grid simple */
+@media (max-width: 768px) {
+    #publicaciones {
+        column-count: 1;
+        display: block;
+    }
+    
+    #publicaciones .card {
+        break-inside: auto;
+        page-break-inside: auto;
+        display: block;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    #publicaciones {
+        column-count: 2;
+        column-gap: 15px;
+    }
+}

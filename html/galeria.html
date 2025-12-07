@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería - Periódico PSAC</title>
+    <link rel="stylesheet" href="../css/style_index.css">
+    <link rel="stylesheet" href="../css/sidebar_common.css">
+    <link rel="stylesheet" href="../css/notification_system.css">
+    <link rel="stylesheet" href="../css/style_galeria.css"> 
+    <script src="../js/notification_system.js"></script>
+</head>
+<body>
+    <!-- Botón hamburguesa -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <img class="nav-icon" src="../svg/home.png" alt="">
+                <span>Inicio</span>
+            </a>
+            <a href="calendario.html" class="nav-item">
+                <img class="nav-icon" src="../svg/calendar.png" alt="">
+                <span>Calendario</span>
+            </a>
+            <a href="contactanos.html" class="nav-item">
+                <img class="nav-icon" src="../svg/paper-plane.png" alt="">
+                <span>Contáctanos</span>
+            </a>
+            <a href="noticias.html" class="nav-item">
+                <img class="nav-icon" src="../svg/bolt.png" alt="">
+                <span>Noticias</span>
+            </a>
+            <a href="galeria.html" class="nav-item" style="background: #f3f4f6;">
+                <img class="nav-icon" src="../svg/star.png" alt="">
+                <span>Galería</span>
+            </a>
+            <a href="editores.html" class="nav-item">
+                <img class="nav-icon" src="../svg/admin-alt.png" alt="">
+                <span>Editores</span>
+            </a>
+            <a href="nosotros.html" class="nav-item">
+                <img class="nav-icon" src="../svg/search.png" alt="">
+                <span>Sobre nosotros</span>
+            </a>
+        </nav>
+
+        <div id="userInfo" style="padding: 20px; border-top: 2px solid #e5e7eb; margin-top: auto; display: none;">
+            <div id="userAvatar"></div>
+        </div>
+
+        <button class="ingresar-btn" onclick="window.location.href='login.html'">Ingresar</button>
+    </aside>
+    
+    <div class="divider-line" id="dividerLine"></div>
+    
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="logo-text">Galería PSAC</h1>
+            </div>
+        </header>
+
+        <div class="body-content">
+            <div class="galeria-container">
+                <!-- Hero Section -->
+                <div class="galeria-hero">
+                    <h1>🖼️ Galería Multimedia</h1>
+                    <p>Explora las mejores imágenes y videos compartidos por la comunidad del Periódico PSAC</p>
+                </div>
+
+                <!-- Buscador -->
+                <div class="galeria-search">
+                    <div class="search-box-galeria">
+                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                        </svg>
+                        <input type="text" id="searchGaleria" placeholder="Buscar por área o descripción...">
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="galeria-controles">
+                    <button class="filtro-btn active" onclick="filtrarPor('todos')">
+                        📁 Todos
+                    </button>
+                    <button class="filtro-btn" onclick="filtrarPor('imagen')">
+                        🖼️ Imágenes
+                    </button>
+                    <button class="filtro-btn" onclick="filtrarPor('video')">
+                        🎥 Videos
+                    </button>
+                </div>
+
+                <!-- Grid de Galería -->
+                <div class="galeria-grid" id="galeriaGrid">
+                    <div class="loading-galeria">
+                        <div class="spinner-galeria"></div>
+                        <p>Cargando galería...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Visualización -->
+    <div class="modal-galeria" id="modalGaleria">
+        <div class="modal-galeria-contenido">
+            <button class="modal-close-galeria" onclick="cerrarModal()">✕</button>
+            <div id="modalMediaContainer"></div>
+            <div class="modal-galeria-info" id="modalInfoContainer"></div>
+        </div>
+    </div>
+
+ <script src="../js/scrypt_galeria.js"></script>
+ <script src="../js/sidebar_common.js"></script>
+ <script src="../js/sidebar_toggle.js"></script>
+</body>
+</html>
